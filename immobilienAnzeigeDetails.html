@@ -1,0 +1,859 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Immobilien Anzeigedetails</title>
+		<script src="immobilienAnzeigedetails.js" defer="true"></script>
+	</head>
+	<body>
+		<header>
+		  <div class="logo">
+			<img src="willhaben_logo.png" alt="Willhaben Logo">
+		  </div>
+		  <div class="account">
+			<a href="#">Nachrichten</a> | 
+			<a href="#">Profil</a> 
+			
+		  </div>
+		  <a class="buttonAnzeigeAufgeben" href="#">+ Neue Anzeige aufgeben</a>
+		</header>
+	  
+		<nav>
+		  <a href="#">MARKTPLATZ</a>
+		  <a href="#">IMMOBILIEN</a>
+		  <a href="#">AUTO & MOTOR</a>
+		</nav>
+	  
+		<h1>Anzeigendetails</h1>
+
+  <section>
+    <h2>Bilder</h2>
+    <div>
+      <p>
+        <img src="icon_bild.png" alt="Bild-Icon" />
+        <br />
+        Bilder per Drag & Drop hinzufügen, 
+        oder <a href="#">Dateien durchsuchen</a><br />
+        <small>Unterstützte Dateiformate jpg, png, gif</small>
+      </p>
+      
+      <p>
+        Bilder unterstützen deine Interessenten dabei, 
+        sich deine Immobilie besser vorstellen zu können.
+      </p>
+      
+      <p>
+        <a href="#">Unsere Foto-Tipps</a>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Grundriss</h2>
+    <p>Hier kannst du einen Grundriss deiner Immobilie zur Verfügung stellen.</p>
+    
+    <div>
+      <p>
+        <img src="icon_grundriss.png" alt="Grundriss-Icon" />
+        <br />
+        Grundriss per Drag & Drop hinzufügen, 
+        oder <a href="#">Dateien durchsuchen</a><br />
+        <small>Unterstützte Dateiformate jpg, png, pdf<br />
+        PDF max. 3 Seiten und 5MB</small>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Titel &amp; Standort deiner Immobilie</h2>
+    <div>
+      <label for="title">Anzeigen-Titel</label><br />
+      <input 
+        type="text" 
+        id="title" 
+        name="title" 
+        placeholder="Beispiel: Charmante 2-Zimmer Wohnung im Zentrum" 
+        required 
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="country">Land</label><br />
+      <select id="country" name="country" required>
+        <option value="Oesterreich" selected>Österreich</option>
+        <option value="Deutschland">Deutschland</option>
+        <option value="Schweiz">Schweiz</option>
+      </select>
+    </div>
+    <br />
+
+    <div>
+      <label for="street">Straße (optional)</label><br />
+      <input 
+        type="text" 
+        id="street" 
+        name="street" 
+        placeholder="Straßenname" 
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="plz">PLZ</label><br />
+      <input 
+        type="text" 
+        id="plz" 
+        name="plz" 
+        placeholder="PLZ" 
+      />
+      <br /><br />
+
+      <label for="city">Ort</label><br />
+      <input 
+        type="text" 
+        id="city" 
+        name="city" 
+        placeholder="Ort wird automatisch ergänzt" 
+      />
+    </div>
+  </section>
+
+  <section>
+    <h2>Objektdaten</h2>
+    
+    <div>
+      <label for="price">Kaufpreis</label><br />
+      <input 
+        type="number" 
+        id="price" 
+        name="price" 
+        placeholder="€" 
+        step="any"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="livingArea">Wohnfläche</label><br />
+      <input 
+        type="number" 
+        id="livingArea" 
+        name="livingArea" 
+        placeholder="m²" 
+        step="any"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="landArea">Grundfläche (optional)</label><br />
+      <input 
+        type="number" 
+        id="landArea" 
+        name="landArea" 
+        placeholder="m²" 
+        step="any"
+      />
+    </div>
+    <br />
+	
+    <div>
+      <label for="propertyType">Objekttyp</label><br />
+      <select id="propertyType" name="propertyType" required>
+        <option value="">Bitte wählen ...</option>
+        <option value="einfamilienhaus">Einfamilienhaus</option>
+        <option value="wohnung">Wohnung</option>
+        <option value="reihenhaus">Reihenhaus</option>
+        <option value="buero">Büro</option>
+        <!-- Weitere Optionen ... -->
+      </select>
+    </div>
+    <br />
+
+    <div>
+      <label for="condition">Zustand (optional)</label><br />
+      <select id="condition" name="condition">
+        <option value="">Bitte wählen ...</option>
+        <option value="neu">Neu</option>
+        <option value="renoviert">Renoviert</option>
+        <option value="gebraucht">Gebraucht</option>
+        <!-- Weitere Optionen ... -->
+      </select>
+    </div>
+    <br />
+
+    <div>
+      <label for="rooms">Anzahl Zimmer (optional)</label><br />
+      <input 
+        type="number" 
+        id="rooms" 
+        name="rooms" 
+        placeholder="z.B. 3" 
+      />
+    </div>
+    <br />
+
+    <div>
+      <p>Bautyp (optional)</p>
+      <input 
+        type="radio" 
+        id="altbau" 
+        name="buildingType" 
+        value="altbau"
+      />
+      <label for="altbau">
+        <!-- Optional icon for Altbau -->
+        <img src="icon_altbau.png" alt="Altbau Icon" />
+        Altbau (vor 1945)
+      </label>
+      <br /><br />
+
+      <input 
+        type="radio" 
+        id="neubau" 
+        name="buildingType" 
+        value="neubau"
+      />
+      <label for="neubau">
+        <!-- Optional icon for Neubau -->
+        <img src="icon_neubau.png" alt="Neubau Icon" />
+        Neubau
+      </label>
+    </div>
+  </section>
+
+  <br />
+  <section>
+    <h2>Verfügbarkeit</h2>
+    <p>(optional)</p>
+
+    <div>
+      <input 
+        type="radio" 
+        id="availableNow" 
+        name="availability" 
+        value="ab-sofort"
+      />
+      <label for="availableNow">ab sofort</label>
+    </div>
+
+    <div>
+      <input 
+        type="radio" 
+        id="byAgreement" 
+        name="availability" 
+        value="nach-vereinbarung"
+      />
+      <label for="byAgreement">nach Vereinbarung</label>
+    </div>
+
+    <div>
+      <input 
+        type="radio" 
+        id="dateFrom" 
+        name="availability" 
+        value="datum"
+      />
+      <label for="dateFrom">ab</label>
+      <input 
+        type="text" 
+        id="dateInput" 
+        name="dateInput" 
+        placeholder="DD.MM.YYYY" 
+      />
+    </div>
+  </section>
+  <section>
+    <h2>Objektbeschreibung</h2>
+    
+    <div>
+      <label for="description">Beschreibung (optional)</label><br />
+
+      <div>
+        <button type="button"><strong>B</strong></button>
+        <button type="button"><em>I</em></button>
+        <button type="button">&#8226;&#8226; (Bullet List)</button>
+        <button type="button">1. 2. 3. (Numbered List)</button>
+      </div>
+
+      <textarea 
+        id="description" 
+        name="description" 
+        placeholder="z.B. Zimmereinteilung, Ausstattung, Mängel" 
+        rows="5">
+      </textarea>
+    </div>
+    <br />
+
+    <div>
+      <label for="location">Lage (optional)</label><br />
+
+      <div>
+        <button type="button"><strong>B</strong></button>
+        <button type="button"><em>I</em></button>
+        <button type="button">&#8226;&#8226; (Bullet List)</button>
+        <button type="button">1. 2. 3. (Numbered List)</button>
+      </div>
+
+      <textarea 
+        id="location" 
+        name="location" 
+        placeholder="z.B. Informationen zu Umgebung, Infrastruktur, Anbindung ans öffentliche Verkehrsnetz, ..."
+        rows="5">
+      </textarea>
+    </div>
+    <br />
+
+    <div>
+      <label for="misc">Sonstiges (optional)</label><br />
+
+      <div>
+        <button type="button"><strong>B</strong></button>
+        <button type="button"><em>I</em></button>
+        <button type="button">&#8226;&#8226; (Bullet List)</button>
+        <button type="button">1. 2. 3. (Numbered List)</button>
+      </div>
+
+      <textarea 
+        id="misc" 
+        name="misc" 
+        rows="5">
+      </textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ausstattung</h2>
+    <p>(optional)</p>
+    
+    <div>
+      <input type="checkbox" id="abstellraum" name="ausstattung[]" value="Abstellraum" />
+      <label for="abstellraum">Abstellraum</label>
+
+      <input type="checkbox" id="barrierefrei" name="ausstattung[]" value="Barrierefrei" />
+      <label for="barrierefrei">Barrierefrei</label>
+
+      <input type="checkbox" id="carport" name="ausstattung[]" value="Carport" />
+      <label for="carport">Carport</label>
+
+      <input type="checkbox" id="einbaukueche" name="ausstattung[]" value="Einbauküche" />
+      <label for="einbaukueche">Einbauküche</label>
+
+      <input type="checkbox" id="fahrstuhl" name="ausstattung[]" value="Fahrstuhl" />
+      <label for="fahrstuhl">Fahrstuhl</label>
+
+      <input type="checkbox" id="garage" name="ausstattung[]" value="Garage" />
+      <label for="garage">Garage</label>
+
+      <input type="checkbox" id="keller" name="ausstattung[]" value="Keller" />
+      <label for="keller">Keller</label>
+
+      <input type="checkbox" id="parkplatz" name="ausstattung[]" value="Parkplatz" />
+      <label for="parkplatz">Parkplatz</label>
+
+      <input type="checkbox" id="teilmoebliert" name="ausstattung[]" value="Teilmöbliert / Möbliert" />
+      <label for="teilmoebliert">Teilmöbliert / Möbliert</label>
+    </div>
+    <br />
+
+    <div>
+      <h3>Heizung (optional)</h3>
+
+      <!-- Column 1 -->
+      <input type="checkbox" id="biomasse" name="heizung[]" value="Biomasse" />
+      <label for="biomasse">Biomasse</label><br />
+
+      <input type="checkbox" id="erdwaerme" name="heizung[]" value="Erdwärme" />
+      <label for="erdwaerme">Erdwärme</label><br />
+
+      <input type="checkbox" id="fussbodenheizung" name="heizung[]" value="Fußbodenheizung" />
+      <label for="fussbodenheizung">Fußbodenheizung</label><br />
+
+      <input type="checkbox" id="hauszentralheizung" name="heizung[]" value="Hauszentralheizung" />
+      <label for="hauszentralheizung">Hauszentralheizung</label><br />
+
+      <input type="checkbox" id="kachelofen" name="heizung[]" value="Kachelofen" />
+      <label for="kachelofen">Kachelofen</label><br />
+
+      <input type="checkbox" id="oelheizung" name="heizung[]" value="Ölheizung" />
+      <label for="oelheizung">Ölheizung</label><br />
+
+      <input type="checkbox" id="radiatoren" name="heizung[]" value="Radiatoren" />
+      <label for="radiatoren">Radiatoren</label><br />
+
+      <input type="checkbox" id="sonstige" name="heizung[]" value="Sonstige" />
+      <label for="sonstige">Sonstige</label>
+      <br /><br />
+
+      <!-- Column 2 -->
+      <input type="checkbox" id="deckenheizung" name="heizung[]" value="Deckenheizung" />
+      <label for="deckenheizung">Deckenheizung</label><br />
+
+      <input type="checkbox" id="etagenheizung" name="heizung[]" value="Etagenheizung" />
+      <label for="etagenheizung">Etagenheizung</label><br />
+
+      <input type="checkbox" id="gasheizung" name="heizung[]" value="Gasheizung" />
+      <label for="gasheizung">Gasheizung</label><br />
+
+      <input type="checkbox" id="holzofen" name="heizung[]" value="Holzofen" />
+      <label for="holzofen">Holzofen</label><br />
+
+      <input type="checkbox" id="kontrollierte_lueftung" name="heizung[]" value="Kontrollierte Wohnraumlüftung" />
+      <label for="kontrollierte_lueftung">Kontrollierte Wohnraumlüftung</label><br />
+
+      <input type="checkbox" id="pellets" name="heizung[]" value="Pellets" />
+      <label for="pellets">Pellets</label><br />
+
+      <input type="checkbox" id="solar" name="heizung[]" value="Solar" />
+      <label for="solar">Solar</label>
+      <br /><br />
+
+      <!-- Column 3 -->
+      <input type="checkbox" id="elektroheizung" name="heizung[]" value="Elektroheizung" />
+      <label for="elektroheizung">Elektroheizung</label><br />
+
+      <input type="checkbox" id="fernwaerme" name="heizung[]" value="Fernwärme" />
+      <label for="fernwaerme">Fernwärme</label><br />
+
+      <input type="checkbox" id="hackschnitzel" name="heizung[]" value="Hackschnitzelheizung" />
+      <label for="hackschnitzel">Hackschnitzelheizung</label><br />
+
+      <input type="checkbox" id="infrarot" name="heizung[]" value="Infrarotheizung" />
+      <label for="infrarot">Infrarotheizung</label><br />
+
+      <input type="checkbox" id="luftwaermepumpe" name="heizung[]" value="Luftwärmepumpe" />
+      <label for="luftwaermepumpe">Luftwärmepumpe</label><br />
+
+      <input type="checkbox" id="photovoltaik" name="heizung[]" value="Photovoltaik" />
+      <label for="photovoltaik">Photovoltaik</label><br />
+
+      <input type="checkbox" id="zentralheizung" name="heizung[]" value="Zentralheizung" />
+      <label for="zentralheizung">Zentralheizung</label>
+    </div>
+    <br />
+
+    <div>
+      <label for="boeden">Böden (optional)</label><br />
+      <select id="boeden" name="boeden">
+        <option value="">Bitte wählen ...</option>
+        <option value="parkett">Parkett</option>
+        <option value="fliesen">Fliesen</option>
+        <option value="teppich">Teppich</option>
+        <option value="laminat">Laminat</option>
+        <!-- Weitere Böden ... -->
+      </select>
+    </div>
+  </section>
+
+  <br />
+
+  <section>
+    <h2>Freiflächen</h2>
+    <p>(optional)</p>
+
+    <div>
+      <input type="checkbox" id="balkon" name="freiflaechen[]" value="Balkon" />
+      <label for="balkon">Balkon</label>
+      <label for="balkon_m2">m² (optional):</label>
+      <input type="number" id="balkon_m2" name="balkon_m2" step="any" />
+    </div>
+    <br />
+
+    <div>
+      <input type="checkbox" id="garten" name="freiflaechen[]" value="Garten" />
+      <label for="garten">Garten</label>
+      <label for="garten_m2">m² (optional):</label>
+      <input type="number" id="garten_m2" name="garten_m2" step="any" />
+    </div>
+    <br />
+
+    <div>
+      <input type="checkbox" id="terrasse" name="freiflaechen[]" value="Terrasse" />
+      <label for="terrasse">Terrasse</label>
+      <label for="terrasse_m2">m² (optional):</label>
+      <input type="number" id="terrasse_m2" name="terrasse_m2" step="any" />
+    </div>
+    <br />
+
+    <div>
+      <input type="checkbox" id="dachterrasse" name="freiflaechen[]" value="Dachterrasse" />
+      <label for="dachterrasse">Dachterrasse</label>
+      <label for="dachterrasse_m2">m² (optional):</label>
+      <input type="number" id="dachterrasse_m2" name="dachterrasse_m2" step="any" />
+    </div>
+    <br />
+
+    <div>
+      <input type="checkbox" id="loggia" name="freiflaechen[]" value="Loggia" />
+      <label for="loggia">Loggia</label>
+      <label for="loggia_m2">m² (optional):</label>
+      <input type="number" id="loggia_m2" name="loggia_m2" step="any" />
+    </div>
+    <br />
+
+    <div>
+      <input type="checkbox" id="wintergarten" name="freiflaechen[]" value="Wintergarten" />
+      <label for="wintergarten">Wintergarten</label>
+      <label for="wintergarten_m2">m² (optional):</label>
+      <input type="number" id="wintergarten_m2" name="wintergarten_m2" step="any" />
+    </div>
+  </section>
+
+  <section>
+    <h2>Energieausweis</h2>
+    
+    <div>
+      <p>
+        Seit dem 01.12.2012 ist die Angabe der Energieausweisdaten nach dem 
+        Energieausweis-Vorlage-Gesetz (EAVG) sowohl gewerblich wie auch privat 
+        verpflichtend. Für das unvollständige Ausfüllen der Felder übernimmt 
+        willhaben keine Verantwortung.
+      </p>
+    </div>
+    <br />
+
+    <div>
+      <label for="hwb">HWB (optional)</label><br />
+      <input 
+        type="text" 
+        id="hwb" 
+        name="hwb" 
+        placeholder="z.B. 45,3"
+      />
+    </div>
+    <br />
+    <div>
+      <label for="hwbClass">HWB Energieklasse (optional)</label><br />
+      <input 
+        type="text" 
+        id="hwbClass" 
+        name="hwbClass" 
+        placeholder="z.B. A++"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="fgee">fGEE (optional)</label><br />
+      <input 
+        type="text" 
+        id="fgee" 
+        name="fgee" 
+        placeholder="z.B. 0,85"
+      />
+    </div>
+    <br />
+    <div>
+      <label for="fgeeClass">fGEE Energieklasse (optional)</label><br />
+      <input 
+        type="text" 
+        id="fgeeClass" 
+        name="fgeeClass" 
+        placeholder="z.B. A++"
+      />
+    </div>
+  </section>
+
+  <br />
+
+  <section>
+    <h2>Sonstige Preise und Kosten</h2>
+
+    <div>
+      <label for="maklerprovision">Maklerprovision (optional)</label><br />
+      <input 
+        type="text" 
+        id="maklerprovision" 
+        name="maklerprovision" 
+        placeholder=""
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="abloese">Ablöse (optional)</label><br />
+      <input 
+        type="number" 
+        id="abloese" 
+        name="abloese" 
+        placeholder="€" 
+        step="any"
+      />
+    </div>
+    <br />
+
+    <div>
+      <p>Wohnbauförderung</p>
+      <input 
+        type="radio" 
+        id="wbf_nein" 
+        name="wohnbaufoerderung" 
+        value="Nein" 
+        checked 
+      />
+      <label for="wbf_nein">Nein</label>
+
+      <input 
+        type="radio" 
+        id="wbf_ja" 
+        name="wohnbaufoerderung" 
+        value="Ja" 
+      />
+      <label for="wbf_ja">Ja</label>
+    </div>
+    <br />
+
+    <p>
+      <a href="#">+ Weitere Angaben (Betriebskosten, Heizkosten, ...)</a>
+    </p>
+    <br />
+
+    <div>
+      <label for="zusatzinfo">Zusatzinformation (optional)</label><br />
+      <input 
+        type="text" 
+        id="zusatzinfo" 
+        name="zusatzinfo" 
+        placeholder=""
+      />
+    </div>
+  </section>
+
+  <br />
+
+  <section>
+    <h2>Dokumente &amp; 360° Rundgang</h2>
+    <p>
+      Hier kannst du beispielsweise ein Exposé, diverse Objektinformation, 
+      Zustandsberichte oder Verkaufsberichte hinzufügen.
+    </p>
+
+    <div>
+      <label for="rundgang">360° Rundgang (optional)</label><br />
+      <input 
+        type="url" 
+        id="rundgang" 
+        name="rundgang" 
+        placeholder="https://www.xyz.at"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="objektinfo">Objektinformationen (optional)</label><br />
+      <input 
+        type="url" 
+        id="objektinfo" 
+        name="objektinfo" 
+        placeholder="https://www.xyz.at"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="zustand">Zustandsbericht (optional)</label><br />
+      <input 
+        type="url" 
+        id="zustand" 
+        name="zustand" 
+        placeholder="https://www.xyz.at"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="verkauf">Verkaufsbericht (optional)</label><br />
+      <input 
+        type="url" 
+        id="verkauf" 
+        name="verkauf" 
+        placeholder="https://www.xyz.at"
+      />
+    </div>
+  </section>
+
+  <section>
+    <h2>Kontakt</h2>
+    
+    
+    <p>
+      <strong>Name</strong><br />
+      <!-- Name (displayed) -->
+    </p>
+
+    
+    <p>
+      <strong>E-Mail-Adresse</strong><br />
+      <!-- E-Mail-Adresse (angezeigt als nicht sichtbar) -->
+      <em>(nicht sichtbar)</em> 
+      <!-- Icon placeholder for editing -->
+      <img src="icon_edit.png" alt="Bearbeiten-Icon" />
+    </p>
+
+    <div>
+      <p>
+        <strong>Info:</strong> Deinen Namen und deine E-Mail-Adresse 
+        kannst du in deinem Profil ändern.
+      </p>
+    </div>
+
+    <div>
+      <label for="firmenname">Firmenname (optional)</label><br />
+      <input 
+        type="text" 
+        id="firmenname" 
+        name="firmenname" 
+        placeholder="Firmenname"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="homepage">Homepage (optional)</label><br />
+      <input 
+        type="url" 
+        id="homepage" 
+        name="homepage" 
+        placeholder="https://www.deine-firma.at"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="tel1">Telefonnummer (optional)</label><br />
+      <input 
+        type="tel" 
+        id="tel1" 
+        name="tel1" 
+        placeholder="z.B. +43 123 456789"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="tel2">Telefonnummer 2 (optional)</label><br />
+      <input 
+        type="tel" 
+        id="tel2" 
+        name="tel2" 
+        placeholder="z.B. +43 987 654321"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="fax">Fax (optional)</label><br />
+      <input 
+        type="tel" 
+        id="fax" 
+        name="fax" 
+        placeholder="z.B. +43 123 456789-99"
+      />
+    </div>
+    <br />
+
+    <div>
+      <label for="immocardId">Immocard-ID (optional)</label><br />
+      <div>
+        <input 
+          type="text" 
+          id="immocardPrefix" 
+          name="immocardPrefix" 
+          value="AT" 
+          readonly 
+          style="width: 40px;" 
+          placeholder="AT"
+        />
+        <input 
+          type="text" 
+          id="immocardId" 
+          name="immocardId" 
+          placeholder="1234567"
+        />
+      </div>
+    </div>
+    <br />
+
+    <div>
+      <label for="immocardFirmaId">Immocard-Firma-ID (optional)</label><br />
+      <input 
+        type="text" 
+        id="immocardFirmaId" 
+        name="immocardFirmaId" 
+        placeholder=""
+      />
+    </div>
+    <br />
+
+    <p>
+      <a href="#">+ Zusätzliche Kontaktperson angeben</a>
+    </p>
+
+    <div>
+      <button type="button">Entwurf speichern</button>
+      <button type="submit">Weiter</button>
+    </div>
+
+  </section>
+	  
+		<footer>
+			<div class="footer-columns">
+			  <div class="footer-column">
+				<h3>Über willhaben</h3>
+				<ul>
+				  <li><a href="#">Jobs bei willhaben</a></li>
+				  <li><a href="#">Presse</a></li>
+				  <li><a href="#">willhaben Blog</a></li>
+				  <li><a href="#">Tech Blog</a></li>
+				</ul>
+			  </div>
+		
+			  <div class="footer-column">
+				<h3>Informationen</h3>
+				<ul>
+				  <li><a href="#">Hilfe und Kontakt</a></li>
+				  <li><a href="#">Sicherheitshinweise</a></li>
+				  <li><a href="#">Nutzungsbedingungen</a></li>
+				  <li><a href="#">Meine Daten</a></li>
+				  <li><a href="#">Datenschutzerklärung</a></li>
+				  <li><a href="#">Wohnkredite</a></li>
+				</ul>
+			  </div>
+		
+			  <div class="footer-column">
+				<h3>Business</h3>
+				<ul>
+				  <li><a href="#">Digital Advertising</a></li>
+				  <li><a href="#">willhaben Immobilien</a></li>
+				  <li><a href="#">willhaben Motornetzwerk</a></li>
+				  <li><a href="#">willhaben Jobs</a></li>
+				  <li><a href="#">Marktplatz Shoplösungen</a></li>
+				</ul>
+			  </div>
+		
+			  <div class="footer-column">
+				<h3>Mobile Apps</h3>
+				<p>Jetzt kostenlos downloaden!</p>
+				<div class="app-stores">
+				  <a href="#"><img src="google_play_badge.png" alt="Jetzt bei Google Play" /></a>
+				  <a href="#"><img src="apple_app_store_badge.png" alt="Laden im App Store" /></a>
+				</div>
+			  </div>
+			</div>
+		
+			<div class="footer-bottom">
+				<ul>
+				  <li><a href="#">Hilfe und Kontakt</a></li>
+				  <li><a href="#">AGB</a></li>
+				  <li><a href="#">Datenschutzerklärung</a></li>
+				  <li><a href="#">Impressum</a></li>
+				</ul>
+		
+			  <div class="copyright">
+				<span>&copy; 2024 Webtechnologien. Alle Rechte vorbehalten.</span>
+			  </div>
+			</div>
+		  </footer>
+		
+	</body>
+</html>

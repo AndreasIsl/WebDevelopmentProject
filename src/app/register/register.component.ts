@@ -1,26 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { ApiService } from '../api.service';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 
 
 
 @Component({
   selector: 'app-register',
-  imports: [ RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule],
+  imports: [ RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule,HttpClientModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
+  providers: [ApiService]
 })
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder , private apiService: ApiService) {
     this.registerForm = this.fb.group({
       userName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
       email: ['', [Validators.required, Validators.email]],
@@ -28,7 +31,7 @@ export class RegisterComponent {
       confirmPassword: ['', Validators.required]
     },{ validators: confirmPasswordValidator });
   }
-
+ 
   get passwordErrors() {
     return this.registerForm.get('password')?.errors;
   }
@@ -39,12 +42,29 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      console.log('Form Submitted!', this.registerForm.value);
+      const userData = {
+        UserName: this.registerForm.value.userName,
+        Password: this.registerForm.value.password
+      };
+  
+      // API-Anfrage ausführen und korrekt behandeln
+      this.apiService.addItem(userData).subscribe({
+        next: (response) => {
+          console.log('Form Submitted! API Response:', response);
+          // Hier kannst du weitere Logik einfügen, z. B. Navigation
+        },
+        error: (err) => {
+          console.error('Fehler bei der API-Anfrage:', err);
+          // Zeige eventuell eine Fehlermeldung im UI an
+        }
+      });
     } else {
       console.log('Form is invalid');
     }
   }
+
 }
+
 
 export function confirmPasswordValidator(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password')?.value;

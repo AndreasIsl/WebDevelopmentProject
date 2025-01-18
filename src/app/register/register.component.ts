@@ -44,7 +44,8 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const userData = {
         UserName: this.registerForm.value.userName,
-        Password: this.registerForm.value.password
+        Password: this.registerForm.value.password,
+        Email: this.registerForm.value.email
       };
   
       // API-Anfrage ausführen und korrekt behandeln

@@ -22,10 +22,11 @@ app.post('/authen', async (req, res) => {
   try {
     const { UserName } = req.body;
     const { Password } = req.body;
+    const { Email } = req.body;
 
     const result = await pool.query(
-      'INSERT INTO authen (UserName,Password) VALUES ($1, $2) RETURNING *',
-      [UserName, Password]
+      'INSERT INTO authen (UserName,Password,Email) VALUES ($1, $2, $3) RETURNING *',
+      [UserName, Password, Email]
     );
     res.json(result.rows[0]);
   } catch (err) {

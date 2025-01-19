@@ -8,3 +8,7 @@ nav {
 #content {
     padding: 20px;
 }
+
+.userControl {
+    float: right;
+}

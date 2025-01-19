@@ -4,8 +4,15 @@
         <button routerLink="">Home</button>
         <button routerLink="/vehicles">Vehicles</button>
         <button routerLink="/real-estate">Real Estate</button>
-        <button routerLink="/login">Login</button>
-        <button routerLink="/register">Register</button>
+        <div *ngIf="!isLoggedIn" class="userControl">
+            <button routerLink="/login">Login</button>
+            <button routerLink="/register">Register</button>
+        </div>
+        <div *ngIf="isLoggedIn" class="userControl">
+            <button routerLink="/profile">Profile</button>
+            <button onclick= onLogout()>Logout</button>
+        </div>
+
     </nav>
     <div id="content">
         <router-outlet></router-outlet>

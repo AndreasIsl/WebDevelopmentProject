@@ -6,6 +6,7 @@ const cors = require('cors');
 app.use(express.json()); // Parse JSON
 app.use(cors());
 
+
 // Example GET endpoint
 app.get('/authen', async (req, res) => {
   try {
@@ -17,7 +18,7 @@ app.get('/authen', async (req, res) => {
   }
 });
 
-// Example POST endpoint
+// register user
 app.post('/authen', async (req, res) => {
   try {
     const { UserName } = req.body;
@@ -29,6 +30,31 @@ app.post('/authen', async (req, res) => {
       [UserName, Password, Email]
     );
     res.json(result.rows[0]);
+    console.log('User registered');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// Check if username already exists (username has to be unique)
+app.post('/authen/user', async (req, res) => {
+  try {
+    const { UserName } = req.body;
+    console.log(UserName);
+    // Check if the username already exists
+    const userExistsQuery = await pool.query(
+      'SELECT * FROM authen WHERE UserName = $1',
+      [UserName]
+    );
+
+    if (userExistsQuery.rows.length > 0) {
+      // Username already exists
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    return res.status(200).json({ message: 'User does not exist, valid for registration' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

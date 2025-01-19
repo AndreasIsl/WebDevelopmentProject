@@ -1,3 +1,7 @@
 .formAlert{
     color: red;
 }
+
+#notUniqueUserAlert{
+    display: none;
+}

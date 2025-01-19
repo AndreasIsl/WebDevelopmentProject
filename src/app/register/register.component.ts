@@ -1,15 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent, User } from '../app.component';
-import { template } from 'lodash';
-
 
 
 

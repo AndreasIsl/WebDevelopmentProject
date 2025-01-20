@@ -61,6 +61,39 @@ app.post('/authen/user', async (req, res) => {
   }
 });
 
+
+// login user
+app.post('/authen/user/login', async (req, res) => {
+  try {
+    const { UserName } = req.body;
+    const { Password } = req.body;
+
+    const userExistsQuery = await pool.query(
+      'SELECT * FROM authen WHERE UserName = $1',
+      [UserName]
+    );
+
+    console.log(`${userExistsQuery.rows[0]?.UserName}; name is ${UserName}; password is ${Password}`);
+    if (userExistsQuery.rows.length > 0) {
+      // Username exists
+      doesPasswordMatch = userExistsQuery.rows[0].password === Password;
+      if (doesPasswordMatch) {
+        return res.status(200).json({ message: 'Login successful' });
+      } else {
+        return res.status(400).json({ message: 'Password is incorrect' });  
+      }
+    }
+
+
+    // Username does not exist
+    return res.status(400).json({ message: 'User does not exist' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
 //server start msg
 app.listen(5000, () => console.log('Server started on port 5000'));
 

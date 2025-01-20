@@ -1,15 +1,15 @@
 <h2>Login</h2>
 <form>
     <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username">
     </div>
     <div class="form-group">
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password">
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-    <button class="btn btn-primary">Clear</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Login</button>
+    <button class="btn btn-primary" (click)="registerForm.reset()">Clear</button>
     <p>Forgot your <a routerLink="/">Register</a></p>
     <p>Don't have an account? <a routerLink="/register">Register</a></p>
 </form>

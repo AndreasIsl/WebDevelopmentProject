@@ -1,66 +1,101 @@
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  isMainModule,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
 import express from 'express';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-const browserDistFolder = resolve(serverDistFolder, '../browser');
+import cors from 'cors';
+import { createServer } from 'http';
+import { createTables } from './config/init.db';
+import { Pool } from 'pg';
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const port = Number(process.env['PORT']) || 3001;
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+app.use(cors());
+app.use(express.json());
 
-/**
- * Serve static files from /browser
- */
-app.use(
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: false,
-    redirect: false,
-  }),
-);
+let dbPool: Pool;
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
-app.use('/**', (req, res, next) => {
-  angularApp
-    .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
-    .catch(next);
+// Initialize database and start server
+createTables()
+  .then((newPool) => {
+    dbPool = newPool;
+    const server = createServer(app);
+
+    server.on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        const nextPort = port + 1;
+        console.log(`Port ${port} is busy, trying ${nextPort}`);
+        server.listen(nextPort);
+      } else {
+        console.error('Server error:', error);
+      }
+    });
+
+    server.listen(port, () => {
+      const address = server.address();
+      if (address && typeof address === 'object') {
+        console.log(`Server is running on port ${address.port}`);
+      }
+    });
+  })
+  .catch((error: Error) => {
+    console.error('Failed to initialize database:', error);
+    process.exit(1);
+  });
+
+// API endpoints
+app.get('/api/listings', async (req, res) => {
+  try {
+    const { propertyType, listingType } = req.query;
+    let query = 'SELECT * FROM listings WHERE 1=1';
+    const values: any[] = [];
+
+    if (propertyType) {
+      values.push(propertyType);
+      query += ` AND property_type = $${values.length}`;
+    }
+
+    if (listingType) {
+      values.push(listingType);
+      query += ` AND listing_type = $${values.length}`;
+    }
+
+    const result = await dbPool.query(query, values);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching listings:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
-/**
- * Start the server if this module is the main entry point.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
- */
-if (isMainModule(import.meta.url)) {
-  const port = process.env['PORT'] || 4000;
-  app.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
-  });
-}
+app.post('/api/listings', async (req, res) => {
+  try {
+    const listing = req.body;
+    const query = `
+      INSERT INTO listings (
+        title, property_type, listing_type, price, 
+        location, specifications, features, contact, 
+        images, description
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      RETURNING *
+    `;
+    
+    const values = [
+      listing.title,
+      listing.propertyType,
+      listing.listingType,
+      listing.price,
+      listing.location,
+      listing.specifications,
+      listing.features,
+      listing.contact,
+      listing.images,
+      listing.description
+    ];
 
-/**
- * The request handler used by the Angular CLI (dev-server and during build).
- */
-export const reqHandler = createNodeRequestHandler(app);
+    const result = await dbPool.query(query, values);
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error creating listing:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+export const reqHandler = app;

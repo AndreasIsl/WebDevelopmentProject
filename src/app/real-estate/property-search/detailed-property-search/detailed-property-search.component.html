@@ -1,0 +1,188 @@
+<div class="detailed-search">
+  <section>
+    <h4>Kategorie</h4>
+    <div class="form-group">
+      <label for="propertyType">Welche Immobilie suchst du?</label>
+      <select 
+        id="propertyType" 
+        [(ngModel)]="selectedPropertyType"
+        (ngModelChange)="onPropertyTypeChange()">
+        <option value="" disabled selected>Bitte wählen</option>
+        <optgroup label="Wohnungen">
+          <option *ngFor="let option of wohnungenOptions" [value]="option">
+            {{ option }}
+          </option>
+        </optgroup>
+        <optgroup label="Häuser">
+          <option *ngFor="let option of hauserOptions" [value]="option">
+            {{ option }}
+          </option>
+        </optgroup>
+      </select>
+    </div>
+  </section>
+
+  <section>
+    <h4>Objektstandort</h4>
+    <div class="form-group">
+      <label>Wo suchst du?</label>
+      <input 
+        type="text" 
+        [(ngModel)]="bundeslandBezirk" 
+        placeholder="Bundesland/Bezirk">
+      <span>oder</span>
+      <input 
+        type="text" 
+        [(ngModel)]="plzOrt" 
+        placeholder="PLZ/Ort">
+    </div>
+  </section>
+
+  <section>
+    <h4>Basisdaten</h4>
+    <div class="form-group numeric-inputs">
+      <div>
+        <label for="price">Preis</label>
+        <div>
+          <input 
+            type="number" 
+            id="priceMin"
+            [(ngModel)]="priceMin" 
+            min="0"
+            placeholder="von">
+          <input 
+            type="number" 
+            id="priceMax"
+            [(ngModel)]="priceMax" 
+            min="0"
+            placeholder="bis">
+        </div>
+      </div>
+
+      <div>
+        <label for="area">Wohnfläche</label>
+        <div>
+          <input 
+            type="number" 
+            id="areaMin"
+            [(ngModel)]="areaMin" 
+            min="0"
+            placeholder="von">
+          <input 
+            type="number" 
+            id="areaMax"
+            [(ngModel)]="areaMax" 
+            min="0"
+            placeholder="bis">
+        </div>
+      </div>
+
+      <div>
+        <label for="rooms">Zimmer</label>
+        <input 
+          type="number" 
+          id="rooms"
+          [(ngModel)]="rooms" 
+          min="0">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h4>Immobilientyp</h4>
+    <div class="form-group">
+      <label>Bauträger</label>
+      <div class="checkbox-group">
+        <input 
+          type="checkbox" 
+          id="newBuildingsOnly"
+          [(ngModel)]="newBuildingsOnly">
+        <label for="newBuildingsOnly">nur Neubauprojekte</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Objekttyp</label>
+      <div class="checkbox-group" *ngIf="category === 'wohnungen'">
+        <div *ngFor="let type of wohnungenTypes">
+          <input 
+            type="checkbox" 
+            [id]="type"
+            [(ngModel)]="selectedTypes[type]">
+          <label [for]="type">{{ type }}</label>
+        </div>
+      </div>
+      <div class="checkbox-group" *ngIf="category === 'häuser'">
+        <div *ngFor="let type of hauserTypes">
+          <input 
+            type="checkbox" 
+            [id]="type"
+            [(ngModel)]="selectedTypes[type]">
+          <label [for]="type">{{ type }}</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h4>Details&Ausstattung</h4>
+    <div class="form-group">
+      <label>Freiflächen</label>
+      <div class="checkbox-group">
+        <div *ngFor="let type of freiflachenTypes">
+          <input 
+            type="checkbox" 
+            [id]="'freiflache-' + type"
+            [(ngModel)]="selectedFreiflachen[type]">
+          <label [for]="'freiflache-' + type">{{ type }}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Ausstattung</label>
+      <div class="checkbox-group">
+        <div *ngFor="let type of ausstattungTypes">
+          <input 
+            type="checkbox" 
+            [id]="'ausstattung-' + type"
+            [(ngModel)]="selectedAusstattung[type]">
+          <label [for]="'ausstattung-' + type">{{ type }}</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h4>Sonstiges</h4>
+    <div class="form-group">
+      <label>Verfügbarkeit</label>
+      <div class="checkbox-group">
+        <div>
+          <input 
+            type="checkbox" 
+            id="availability-immediate"
+            [(ngModel)]="availableImmediately">
+          <label for="availability-immediate">ab sofort</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Suchzeitraum</label>
+      <div class="checkbox-group">
+        <div>
+          <input 
+            type="checkbox" 
+            id="last-48-hours"
+            [(ngModel)]="last48Hours">
+          <label for="last-48-hours">nur Anzeigen der letzten 48 Stunden</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="search-results-button">
+    <button (click)="showResults()">{{ numberOfHits }} Treffer anzeigen</button>
+  </div>
+</div>

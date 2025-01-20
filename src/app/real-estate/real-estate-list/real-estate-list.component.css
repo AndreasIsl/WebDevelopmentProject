@@ -1,0 +1,36 @@
+.page-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.sidebar {
+  flex: 0 0 300px; /* Fixed width sidebar */
+}
+
+.main-content {
+  flex: 1; /* Takes remaining space */
+}
+
+.pagination-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.nav-right select {
+  padding: 5px;
+  border-radius: 4px;
+}

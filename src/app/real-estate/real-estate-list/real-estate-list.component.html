@@ -1,0 +1,218 @@
+<div class="page-container">
+  <div class="sidebar">
+    <div class="category-selection">
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)">
+        <option value="wohnung-mieten">Wohnung mieten</option>
+        <option value="wohnung-kaufen">Wohnung kaufen</option>
+        <option value="haus-mieten">Haus mieten</option>
+        <option value="haus-kaufen">Haus kaufen</option>
+      </select>
+    </div>
+
+    <div class="objektstandort">
+      <h3>Objektstandort</h3>
+      <div class="region-search">
+        <div class="input-group">
+          <label>Suche in der Region</label>
+          <input 
+            type="text" 
+            placeholder="Bundesland/Bezirk">
+        </div>
+      </div>
+
+      <span>oder</span>
+
+      <div class="location-search">
+        <div class="input-group">
+          <label>direkt nach Orten</label>
+          <input 
+            type="text" 
+            placeholder="PLZ/Ort eingeben">
+        </div>
+      </div>
+    </div>
+
+    <div class="basisdaten">
+      <h3>Basisdaten</h3>
+      <div class="price-range">
+        <label>Preis</label>
+        <div class="range-inputs">
+          <input type="number" placeholder="von">
+          <input type="number" placeholder="bis">
+        </div>
+      </div>
+
+      <div class="area-range">
+        <label>Wohnfläche</label>
+        <div class="range-inputs">
+          <input type="number" placeholder="von">
+          <input type="number" placeholder="bis">
+        </div>
+      </div>
+
+      <div class="rooms">
+        <label>Zimmer</label>
+        <input type="number" min="1">
+      </div>
+    </div>
+
+    <div class="immobilientyp">
+      <h3>Immobilientyp</h3>
+      
+      <div class="form-group">
+        <label>Bauträger</label>
+        <div class="checkbox-group">
+          <input 
+            type="checkbox" 
+            id="newBuildingsOnly"
+            [(ngModel)]="newBuildingsOnly">
+          <label for="newBuildingsOnly">nur Neubauprojekte</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Objekttyp</label>
+        <div class="checkbox-group" *ngIf="selectedCategory === 'wohnung-mieten' || selectedCategory === 'wohnung-kaufen'">
+          <div *ngFor="let type of wohnungenTypes">
+            <input 
+              type="checkbox" 
+              [id]="'type-' + type"
+              [(ngModel)]="selectedTypes[type]">
+            <label [for]="'type-' + type">{{ type }}</label>
+          </div>
+        </div>
+        <div class="checkbox-group" *ngIf="selectedCategory === 'haus-mieten' || selectedCategory === 'haus-kaufen'">
+          <div *ngFor="let type of hauserTypes">
+            <input 
+              type="checkbox" 
+              [id]="'type-' + type"
+              [(ngModel)]="selectedTypes[type]">
+            <label [for]="'type-' + type">{{ type }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-ausstattung">
+      <h3>Details & Ausstattung</h3>
+      
+      <div class="form-group">
+        <label>Freiflächen</label>
+        <div class="checkbox-group">
+          <div *ngFor="let type of freiflachenTypes">
+            <input 
+              type="checkbox" 
+              [id]="'freiflache-' + type"
+              [(ngModel)]="selectedFreiflachen[type]">
+            <label [for]="'freiflache-' + type">{{ type }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Ausstattung</label>
+        <div class="checkbox-group">
+          <div *ngFor="let type of ausstattungTypes">
+            <input 
+              type="checkbox" 
+              [id]="'ausstattung-' + type"
+              [(ngModel)]="selectedAusstattung[type]">
+            <label [for]="'ausstattung-' + type">{{ type }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sonstiges">
+      <h3>Sonstiges</h3>
+      
+      <div class="form-group">
+        <label>Verfügbarkeit</label>
+        <div class="checkbox-group">
+          <div>
+            <input 
+              type="checkbox" 
+              id="availability-immediate"
+              [(ngModel)]="availableImmediately">
+            <label for="availability-immediate">ab sofort</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Suchzeitraum</label>
+        <div class="checkbox-group">
+          <div>
+            <input 
+              type="checkbox" 
+              id="last-48-hours"
+              [(ngModel)]="last48Hours">
+            <label for="last-48-hours">nur Anzeigen der letzten 48 Stunden</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <nav class="pagination-nav">
+      <div class="nav-left">
+        <button 
+          class="nav-button prev" 
+          (click)="goToPreviousPage()" 
+          [disabled]="currentPage === 1">
+          Zurück
+        </button>
+
+        <div class="page-numbers">
+          <button 
+            *ngFor="let page of getPages()" 
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </div>
+
+        <button 
+          class="nav-button next" 
+          (click)="goToNextPage()" 
+          [disabled]="currentPage === totalPages">
+          Weiter
+        </button>
+      </div>
+
+      <div class="nav-right">
+        <select [(ngModel)]="selectedSort" (ngModelChange)="onSortChange()">
+          <option *ngFor="let option of sortOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+    </nav>
+
+    <div class="listing-container">
+      <h2>{{ listingType === 'rent' ? 'Mietobjekte' : 'Kaufobjekte' }}</h2>
+      
+      <div class="listings-grid">
+        <div class="property-item" *ngFor="let property of listings">
+          <!-- Image -->
+          <img [src]="property.images?.[0] || 'assets/placeholder-property.jpg'" 
+               [alt]="property.title">
+          
+          <!-- Title -->
+          <h3>{{ property.title }}</h3>
+          
+          <!-- Location -->
+          <p class="location">{{ property.location?.city }}</p>
+          
+          <!-- Basic Data -->
+          <div class="basic-data">
+            <span>{{ property.specifications?.livingArea }}m²</span>
+            <span>{{ property.specifications?.rooms }} Zimmer</span>
+            <span>€{{ property.price | number }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

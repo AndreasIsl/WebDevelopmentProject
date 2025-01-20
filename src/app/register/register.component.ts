@@ -8,11 +8,6 @@ import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent, User } from '../app.component';
 
-
-
-
-
-
 @Component({
   selector: 'app-register',
   imports: [RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule, HttpClientModule],
@@ -23,7 +18,10 @@ import { AppComponent, User } from '../app.component';
 export class RegisterComponent {
   registerForm: FormGroup;
   @ViewChild('notUniqueUserAlert') notUniqueUserAlert!: ElementRef<HTMLParagraphElement>;
-
+  
+  get passwordErrors(): { [key: string]: any } {
+    return this.registerForm.get('password')?.errors || {};
+  }
 
   constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private appComponent: AppComponent) {
     this.registerForm = this.fb.group({
@@ -32,10 +30,6 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(8), passwordValidator]],
       confirmPassword: ['', Validators.required]
     }, { validators: confirmPasswordValidator });
-  }
-
-  get passwordErrors() {
-    return this.registerForm.get('password')?.errors;
   }
 
   get registerFormErrors() {
@@ -100,7 +94,6 @@ export class RegisterComponent {
       console.error('Element not found: notUniqueUserAlert');
     }
   }
-
 }
 
 export function confirmPasswordValidator(group: AbstractControl): ValidationErrors | null {
@@ -111,7 +104,6 @@ export function confirmPasswordValidator(group: AbstractControl): ValidationErro
   }
   return null;
 }
-
 
 export function passwordValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;

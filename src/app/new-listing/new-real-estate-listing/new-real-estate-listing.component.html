@@ -1,0 +1,101 @@
+<h1>Neue Immobilien Anzeige</h1>
+
+<div class="real-estate-options" *ngIf="!showListingForm">
+  <button class="house-button" (click)="toggleHouseOptions()">Haus</button>
+  <button class="apartment-button" (click)="toggleApartmentOptions()">Wohnungen</button>
+
+  <div *ngIf="showHouseOptions" class="house-options">
+    <div>
+      <span>Haus verkaufen</span>
+      <button (click)="navigateToForm('house', 'sell')">Anzeige aufgeben</button>
+    </div>
+    <div>
+      <span>Haus vermieten</span>
+      <button (click)="navigateToForm('house', 'rent')">Anzeige aufgeben</button>
+    </div>
+  </div>
+
+  <div *ngIf="showApartmentOptions" class="apartment-options">
+    <div>
+      <span>Wohnung verkaufen</span>
+      <button (click)="navigateToForm('apartment', 'sell')">Anzeige aufgeben</button>
+    </div>
+    <div>
+      <span>Wohnung vermieten</span>
+      <button (click)="navigateToForm('apartment', 'rent')">Anzeige aufgeben</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showListingForm" class="listing-form-container">
+  <h2>Neue Immobilienanzeige erstellen</h2>
+
+  <form (ngSubmit)="onSubmit()" #listingForm="ngForm">
+    <div>
+      <label for="title">Titel:</label>
+      <input type="text" id="title" [(ngModel)]="listing.title" name="title" required>
+    </div>
+
+    <div>
+      <label for="propertyType">Immobilientyp:</label>
+      <select id="propertyType" [(ngModel)]="listing.propertyType" name="propertyType">
+        <option value="apartment">Wohnung</option>
+        <option value="house">Haus</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="listingType">Angebotsart:</label>
+      <select id="listingType" [(ngModel)]="listing.listingType" name="listingType">
+        <option value="rent">Miete</option>
+        <option value="sale">Verkauf</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="price">Preis:</label>
+      <input type="number" id="price" [(ngModel)]="listing.price" name="price" required>
+    </div>
+
+    <div>
+      <label for="city">Stadt:</label>
+      <input type="text" id="city" [(ngModel)]="listing.location.city" name="city" required>
+    </div>
+
+    <div>
+      <label for="postalCode">PLZ</label><br />
+      <input 
+        type="text" 
+        id="postalCode"
+        name="postalCode"
+        [(ngModel)]="listing.location.postalCode"
+        required
+        placeholder="PLZ"
+      />
+    </div>
+
+    <div>
+      <label for="street">Straße:</label>
+      <input type="text" id="street" [(ngModel)]="listing.location.street" name="street" required>
+    </div>
+
+    <div>
+      <label for="livingArea">Wohnfläche (m²):</label>
+      <input type="number" id="livingArea" [(ngModel)]="listing.specifications.livingArea" name="livingArea" required>
+    </div>
+
+    <div>
+      <label for="rooms">Zimmer:</label>
+      <input type="number" id="rooms" [(ngModel)]="listing.specifications.rooms" name="rooms" required>
+    </div>
+
+    <div>
+      <label for="image">Bild URL:</label>
+      <input type="text" id="image" [(ngModel)]="listing.images[0]" name="image" #image="ngModel" required>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Anzeige erstellen</button>
+    </div>
+  </form>
+</div>

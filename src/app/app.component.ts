@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,RouterLink,RouterLinkActive,CommonModule],
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'HabenWollen';
   currentUser: User | null = null;
-  isLoggedIn: Boolean = false;
-
+  isLoggedIn = false;
 
   public setCurrentUser(user: User): void {
     this.currentUser = user;
@@ -35,7 +35,6 @@ export class User {
     private password: string,
     private email: string,
     private image: string
-
   ) {}
 
   public getName(): string {

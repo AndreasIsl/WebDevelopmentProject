@@ -1,19 +1,22 @@
 <div id="main">
-    <nav>
-        <h1> Test </h1>
-        <button routerLink="">Home</button>
-        <button routerLink="/vehicles">Vehicles</button>
-        <button routerLink="/real-estate">Real Estate</button>
-        <div *ngIf="!isLoggedIn" class="userControl">
-            <button routerLink="/login">Login</button>
-            <button routerLink="/register">Register</button>
-        </div>
-        <div *ngIf="isLoggedIn" class="userControl">
-            <button routerLink="/profile">Profile</button>
-            <button onclick= onLogout()>Logout</button>
-        </div>
 
-    </nav>
+        <h1> MÖCHTEHABEN </h1>
+        <header>
+            <button routerLink="/new-listing">Neue Anzeige aufgeben</button>
+            <div *ngIf="!isLoggedIn" class="userControl">
+                <button routerLink="/login">Login</button>
+                <button routerLink="/register">Register</button>
+            </div>
+            <div *ngIf="isLoggedIn" class="userControl">
+                <button routerLink="/profile">Profile</button>
+                <button onclick= onLogout()>Logout</button>
+            </div>
+            <nav>
+                <button routerLink="">Home</button>
+                <button routerLink="/vehicles">Vehicles</button>
+                <button routerLink="/real-estate">Real Estate</button>
+            </nav>
+        </header>
     <div id="content">
         <router-outlet></router-outlet>
     </div>

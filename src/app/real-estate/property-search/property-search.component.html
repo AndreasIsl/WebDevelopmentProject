@@ -1,0 +1,94 @@
+<div class="property-search">
+	<div class="category-selection">
+	  <div class="radio-group">
+		<input 
+		  type="radio" 
+		  id="wohnungen" 
+		  name="category" 
+		  [value]="'wohnungen'" 
+		  [(ngModel)]="selectedCategory">
+		<label for="wohnungen">Wohnungen</label>
+
+		<input 
+		  type="radio" 
+		  id="häuser" 
+		  name="category" 
+		  [value]="'häuser'" 
+		  [(ngModel)]="selectedCategory">
+		<label for="häuser">Häuser</label>
+	  </div>
+	</div>
+  
+	<div class="search-content">
+	  <div class="search-form">
+		<div class="form-group">
+		  <label for="propertyType">Welche Immobilie suchst du?</label>
+		  <select id="propertyType" [(ngModel)]="selectedPropertyType">
+			<option value="" disabled selected>Bitte wählen</option>
+			<ng-container *ngIf="selectedCategory === 'wohnungen'">
+			  <option *ngFor="let option of wohnungenOptions" [value]="option">
+				{{ option }}
+			  </option>
+			</ng-container>
+			<ng-container *ngIf="selectedCategory === 'häuser'">
+			  <option *ngFor="let option of hauserOptions" [value]="option">
+				{{ option }}
+			  </option>
+			</ng-container>
+		  </select>
+		</div>
+
+		<div class="form-group">
+		  <label>Wo suchst du?</label>
+		  <input 
+			type="text" 
+			[(ngModel)]="bundeslandBezirk" 
+			placeholder="Bundesland/Bezirk">
+		  <span>oder</span>
+		  <input 
+			type="text" 
+			[(ngModel)]="plzOrt" 
+			placeholder="PLZ/Ort">
+		</div>
+
+		<div class="form-group numeric-inputs">
+		  <div>
+			<label for="price">€</label>
+			<input 
+			  type="number" 
+			  id="price"
+			  [(ngModel)]="price" 
+			  placeholder="Preis bis"
+			  min="0">
+		  </div>
+
+		  <div>
+			<label for="area">m²</label>
+			<input 
+			  type="number" 
+			  id="area"
+			  [(ngModel)]="area" 
+			  placeholder="Fläche ab"
+			  min="0">
+		  </div>
+
+		  <div>
+			<input 
+			  type="number" 
+			  id="rooms"
+			  [(ngModel)]="rooms" 
+			  placeholder="Zimmer"
+			  min="0">
+		  </div>
+		</div>
+
+		<div class="action-buttons">
+		  <button class="show-results" (click)="showResults()">
+			{{ numberOfHits }} Objekte anzeigen
+		  </button>
+		  <button (click)="navigateToDetailedSearch()">Filter</button>
+		  <button (click)="resetFilter()">Filter zurücksetzen</button>
+		</div>
+	  </div>
+	</div>
+  </div>

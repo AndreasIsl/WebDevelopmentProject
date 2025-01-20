@@ -1,18 +1,24 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
+
 dotenv.config();
 
-const dbPool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: 'postgres',
-    port: 5432,
+console.log(process.env['DB_USER']);
+console.log(process.env['DB_HOST']);
+console.log(process.env['DB_NAME']);
+console.log(process.env['DB_PASSWORD']);
+
+const pool = new Pool({
+    user: process.env['DB_USER'],
+    host: process.env['DB_HOST'],
+    database: process.env['DB_NAME'],
+    password: process.env['DB_PASSWORD'] as string,
+    port: process.env['DB_PORT'] ? parseInt(process.env['DB_PORT']) : undefined,
 });
 
 // Test the database connection
-dbPool.query('SELECT NOW()', (err, res) => {
+pool.query('SELECT NOW()', (err, res) => {
     if (err) {
         console.error('Database connection error:', err);
     } else {
@@ -20,4 +26,4 @@ dbPool.query('SELECT NOW()', (err, res) => {
     }
 });
 
-export default dbPool; 
+export default pool; 

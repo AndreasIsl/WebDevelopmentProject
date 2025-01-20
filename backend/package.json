@@ -17,7 +17,6 @@
     "@types/node": "^22.10.7",
     "@types/pg": "^8.11.10",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pg": "^8.13.1",
     "pg-pool": "^3.7.0",
@@ -26,6 +25,8 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "dotenv": "^16.4.7",
+    "dotenv-webpack": "^8.1.0",
     "nodemon": "^3.1.9"
   }
 }

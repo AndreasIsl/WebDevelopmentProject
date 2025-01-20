@@ -1,27 +1,19 @@
 import { Pool } from 'pg';
-import dbPool from './db.config';
+import pool from './db.config';
 
-export async function createTables(): Promise<Pool> {
+
+export async function createTables() {
   try {
     // First create the database if it doesn't exist
-    await dbPool.query(`
+    await pool.query(`
       SELECT 'CREATE DATABASE realestate'
       WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'realestate')
     `).catch(() => {
       console.log('Database might already exist, continuing...');
     });
 
-    // Connect to the realestate database
-    const realEstatePool = new Pool({
-      user: 'postgres',
-      host: 'localhost',
-      database: 'realestate',
-      password: 'postgres',
-      port: 5432,
-    });
-
     // Create tables
-    await realEstatePool.query(`
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS listings (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -39,22 +31,9 @@ export async function createTables(): Promise<Pool> {
     `);
     console.log('Tables initialized successfully');
     
-    // Close the initial pool and return the new one
-    await dbPool.end();
-    return realEstatePool;
+    await pool.end();
   } catch (err) {
     console.error('Error initializing tables:', err);
     throw err;
   }
-}
-
-// Export a function to get a new pool connection
-export function getPool(): Pool {
-  return new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'realestate',
-    password: 'postgres',
-    port: 5432,
-  });
 }

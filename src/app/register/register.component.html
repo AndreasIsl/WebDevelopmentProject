@@ -43,7 +43,7 @@
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Register</button>
-    <button class="btn btn-primary" (click)="registerForm.reset()">Clear</button>
+    <button type="button" class="btn btn-primary" (click)="registerForm.reset()">Clear</button>
     <p>Already have an account? <a routerLink="/login">Login</a></p>
     <p  #notUniqueUserAlert id='notUniqueUserAlert' class="formAlert">Error: User already exists</p>
 

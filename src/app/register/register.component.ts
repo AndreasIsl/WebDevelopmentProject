@@ -7,13 +7,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent, User } from '../app.component';
-
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule, HttpClientModule],
+  imports: [RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule, HttpClientModule,],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
-  providers: [ApiService]
+  providers: [ApiService,]
 })
 export class RegisterComponent {
   registerForm: FormGroup;

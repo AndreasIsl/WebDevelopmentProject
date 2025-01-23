@@ -13,19 +13,52 @@ export class AppComponent {
   title = 'HabenWollen';
   currentUser: User | null = null;
   isLoggedIn = false;
-
+  
   public setCurrentUser(user: User): void {
     this.currentUser = user;
     this.isLoggedIn = true;
   }
-
+  
   public getCurrentUser(): User | null {
     return this.currentUser;
   }
-
+  
   public onLogout() {
     this.isLoggedIn = false;
     this.currentUser = null;
+  }
+  
+  public async onLogin(UserName: any, Password: any) {
+    const isUserValid = await this.loadUser(UserName, Password);
+    if (isUserValid) {
+      console.log('Login successfull!');
+    } else {
+      console.error('Login failed!');
+    }
+  }
+  
+  private async loadUser(UserName: any, Password: any) {
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:5000/authen/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ UserName: UserName , Password: Password}),
+      }).then(async (response) => {
+        
+        if (response.ok) {
+          const data = await response.json();
+          this.setCurrentUser(new User(UserName, Password, data.email, data.image));
+
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }).catch((err) => {
+        resolve(false);
+      });
+    })
   }
 }
 

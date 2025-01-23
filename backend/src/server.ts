@@ -150,16 +150,16 @@ app.post('/authen/user', async (req, res) => {
 
     if (userExistsQuery.rows.length > 0) {
       // Username already exists
-      // return res.status(400).json({ error: 'Username already exists' });
+      res.status(400).json({ error: 'Username already exists' });
     }
 
-    // return res.status(200).json({ message: 'User does not exist, valid for registration' });
+    res.status(200).json({ message: 'User does not exist, valid for registration' });
   } catch (err) {
     res.status(500).send('Server Error');
   }
 });
 
-
+//-------------------->Login
 // login user
 app.post('/authen/user/login', async (req, res) => {
   try {
@@ -167,23 +167,23 @@ app.post('/authen/user/login', async (req, res) => {
     const { Password } = req.body;
 
     const userExistsQuery = await pool.query(
-      'SELECT * FROM authen WHERE UserName = $1',
+      'SELECT * FROM authen WHERE username = $1',
       [UserName]
     );
 
-    console.log(`${userExistsQuery.rows[0]?.UserName}; name is ${UserName}; password is ${Password}`);
+    console.log(`${userExistsQuery.rows[0]}; name is ${UserName}; password is ${Password}`);
     if (userExistsQuery.rows.length > 0) {
       // Username exists
       let doesPasswordMatch = userExistsQuery.rows[0].password === Password;
       if (doesPasswordMatch) {
-        // return res.status(200).json({ message: 'Login successful' } );
+        res.status(200).json({ message: 'Login successful' });
       } else {
-        // return res.status(400).json({ message: 'Password is incorrect' });
+        res.status(400).json({ message: 'Password is incorrect' });
       }
+    } else {
+      // Username does not exist
+      res.status(400).json({ message: 'User does not exist' });
     }
-
-    // Username does not exist
-    // return res.status(400).json({ message: 'User does not exist' });
   } catch (err) {
     if (err instanceof Error) {
       console.error(err.message);
@@ -194,9 +194,45 @@ app.post('/authen/user/login', async (req, res) => {
   }
 });
 
-// Generell logic
+// check login data
+app.get('/authen/user/login', async (req, res) => {
+  try {
+    const { UserName, Password } = req.query; // Get query parameters
 
-export const reqHandler = app;
+    if (!UserName || !Password) {
+       res.status(400).json({ message: 'Username and password are required' });
+    }
+
+    const userExistsQuery = await pool.query(
+      'SELECT * FROM authen WHERE username = $1',
+      [UserName]
+    );
+
+    console.log(`${userExistsQuery.rows[0]}; name is ${UserName}; password is ${Password}`);
+
+    if (userExistsQuery.rows.length > 0) {
+      // Username exists
+      let doesPasswordMatch = userExistsQuery.rows[0].password === Password;
+      if (doesPasswordMatch) {
+         res.status(200).json({ message: 'Login successful' });
+      } else {
+         res.status(400).json({ message: 'Password is incorrect' });
+      }
+    } else {
+      // Username does not exist
+       res.status(400).json({ message: 'User does not exist' });
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+     res.status(500).send('Server Error');
+  }
+});
+
+// Generell logic
 
 //server start msg
 app.listen(5000, () => console.log('Server started on port 5000'));
@@ -211,4 +247,3 @@ const shutdownHandler = (signal: string) => {
 process.on('SIGINT', () => shutdownHandler('SIGINT'));  // Bei Ctrl+C
 process.on('SIGTERM', () => shutdownHandler('SIGTERM'));  // Bei systemgesteuertem Herunterfahren
 
-export default app;

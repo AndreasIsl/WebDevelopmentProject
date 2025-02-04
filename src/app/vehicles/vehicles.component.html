@@ -1,1 +1,21 @@
-<p>vehicles works!</p>
+<div id = "vehicle_container">
+    <div id="vehicle_search">
+        <input type="text" placeholder="Audi A4....." id="search-box">
+        <button id="vehicle_search_button" (click)="searchVehicle()">
+            <span>Search</span>
+            <img src="..\assets\images\magnifying-glass-solid.svg" alt="Icon" width="15" height="15">
+        </button>
+    </div>
+    <div id="vehicle_filters">
+        <div id="vehicle_filters_achordeon">
+            <h1> Here will be Filters</h1>
+        </div>
+        <button id="vehicle_filters_button" (click)= "toggleFilters()">
+            <img src="../assets/images/chevron-down-solid.svg" alt="Icon" width="20" height="20">
+        </button>
+    </div>
+    <div id="vehicle_content">
+    
+    </div>
+    
+</div>

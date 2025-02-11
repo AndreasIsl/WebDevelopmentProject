@@ -8,13 +8,17 @@
     margin: 0;
     padding: 20px;
     width: 100%;
-    display: none;
+
 }
+
+
+
 
 #vehicle_filters_button {
     background-color: var(--secondary-color);
     border-color:   var(--secondary-color);
     min-width: 40px;
+    border-radius: 0 0 5px 5px;
 }
 
 #vehicle_filters{
@@ -34,8 +38,15 @@
 #vehicle_search button {
     display: flex;
     gap: 5px;	
+    border-radius: 0px 20px 20px 0px;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
 }
 
 #search-box{
     min-width: 60%;
+    height: 30px;
+    border-radius: 20px 0px 0px 20px;
+    padding-left : 10px;
 }

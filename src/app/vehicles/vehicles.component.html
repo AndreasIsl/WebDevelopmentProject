@@ -1,21 +1,35 @@
 <div id = "vehicle_container">
     <div id="vehicle_search">
-        <input type="text" placeholder="Audi A4....." id="search-box">
+        <input type="text" placeholder="Audi A4....." id="search-box"  >
         <button id="vehicle_search_button" (click)="searchVehicle()">
             <span>Search</span>
             <img src="..\assets\images\magnifying-glass-solid.svg" alt="Icon" width="15" height="15">
         </button>
     </div>
-    <div id="vehicle_filters">
-        <div id="vehicle_filters_achordeon">
+    <div id="vehicle_filters"  >
+
+        <div id="vehicle_filters_achordeon" *ngIf="isVisible" ngClass="{'show': isVisible}">
             <h1> Here will be Filters</h1>
         </div>
+
         <button id="vehicle_filters_button" (click)= "toggleFilters()">
             <img src="../assets/images/chevron-down-solid.svg" alt="Icon" width="20" height="20">
         </button>
     </div>
     <div id="vehicle_content">
-    
+        <ul>
+            <li *ngFor="let vehicle of vehicles">
+                <div id="vehicle_container">
+                    <img src="{{vehicle.Image}}" alt="Vehicle Image" width="100" height="100">
+                    <div id="vehicle_info">
+                        <p>{{vehicle.marke}} {{vehicle.modell}}</p>
+                        <p>{{vehicle.preis}} €</p>
+                        <p>{{vehicle.kilometerstand}} km</p>
+                        <p>{{vehicle.baujahr}}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
     
 </div>

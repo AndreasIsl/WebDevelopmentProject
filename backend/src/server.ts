@@ -232,6 +232,21 @@ app.get('/authen/user/login', async (req, res) => {
   }
 });
 
+//-------------------->Vehicles	
+app.get('/vehicles', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM vehicles');
+    res.json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 // Generell logic
 
 //server start msg

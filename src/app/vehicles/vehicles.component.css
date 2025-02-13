@@ -1,0 +1,115 @@
+#vehicle_container{
+    --primary-color: #333;
+    --secondary-color: #9d9c9c;
+    --content-color: #f4f4f4;
+    font-size: large;
+}
+
+#vehicle_filters_achordeon {
+    background-color: var(--primary-color);
+    margin: 0;
+    padding: 20px;
+    width: 100%;
+    border: 1px solid #d2d2d2; 
+    color: #fff;
+    
+}
+
+#vehicle_filters_achordeon form div {
+    display: flex;
+    flex-direction: row;
+    flex: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+#vehicle_filters_button {
+    background-color: var(--primary-color);
+    border-color:   var(--primary-color);
+    min-width: 40px;
+    border-radius: 0 0 5px 5px;;
+}
+
+#vehicle_filters{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#vehicle_search{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    padding: 10px;
+}
+
+#vehicle_search button {
+    display: flex;
+    gap: 5px;	
+    border-radius: 0px 20px 20px 0px;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+}
+
+#search-box{
+    min-width: 60%;
+    height: 30px;
+    border-radius: 20px 0px 0px 20px;
+    padding-left : 10px;
+}
+
+#vehicle_content ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 10px 10px 0 10px; 
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+
+#vehicle_item_container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #000000; 
+    border-radius: 8px; 
+    background-color: var(--content-color);
+    flex-direction: column;
+    min-width: 350px;
+    height: 400px;
+    align-items: center; 
+}
+
+#vehicle_item_container div{
+    width: 100%;
+}
+
+.filter_list{
+    list-style: none;
+}
+
+.manu_fieldset{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#range_container {
+  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

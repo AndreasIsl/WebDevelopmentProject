@@ -3,12 +3,22 @@ nav {
     background-color: #333;
     color: white;
     padding: 10px;
+    
 }
 
 #content {
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .userControl {
     float: right;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

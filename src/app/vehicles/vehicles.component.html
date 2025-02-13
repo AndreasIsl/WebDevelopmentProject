@@ -1,1 +1,69 @@
-<p>vehicles works!</p>
+<div id="vehicle_container">
+    <div id="vehicle_search">
+        <input type="text" placeholder="Audi A4....." id="search-box">
+        <button id="vehicle_search_button" (click)="searchVehicle()">
+            <span>Search</span>
+            <img src="..\assets\images\magnifying-glass-solid.svg" alt="Icon" width="15" height="15">
+        </button>
+    </div>
+    <div id="vehicle_filters">
+
+        <div id="vehicle_filters_achordeon" *ngIf="isVisible" ngClass="{'show': isVisible}">
+            <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+                <div>
+                    <fieldset>
+                        <legend>Brands</legend>
+                        <ul class="filter_list">
+                            <li *ngFor="let brand of brands">
+                                <label for="{{brand}}">{{brand}}</label>
+                                <input type="checkbox" id="{{brand}}" formControlName="{{brand}}">
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <fieldset class="manu_fieldset">
+                        <legend>Manufactoring dates till</legend>
+                        <span>{{manufactoringDates[0]}}</span>
+                        <div id="range_container">
+                            <input type="range" name="date" [min]="manufactoringDates[0]"
+                                [max]="manufactoringDates[manufactoringDates.length - 1]"
+                                formControlName="manufactoringDate" #rangeInput (input)="0" />
+                            <span>{{ rangeInput.value }}</span>
+                        </div>
+                        <span>{{manufactoringDates[manufactoringDates.length - 1]}}</span>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Ids</legend>
+                        <input type="text" list="ids" formControlName="Ids" />
+                        <datalist id="ids">
+                            <option *ngFor="let id of ids" value="{{id}}">
+                        </datalist>
+                    </fieldset>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" (click)="filterForm.reset()">Clear</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <button id="vehicle_filters_button" (click)="toggleFilters()">
+            <img src="../assets/images/chevron-down-solid.svg" alt="Icon" width="20" height="20">
+        </button>
+    </div>
+    <div id="vehicle_content">
+        <ul>
+            <li *ngFor="let vehicle of vehicles">
+                <div id="vehicle_item_container">
+                    <img src="{{vehicle.Image}}" alt="Vehicle Image" width="100" height="100">
+                    <div id="vehicle_info">
+                        <p>{{vehicle.marke}} {{vehicle.modell}}</p>
+                        <p>{{vehicle.preis}} €</p>
+                        <p>{{vehicle.kilometerstand}} km</p>
+                        <p>{{vehicle.baujahr}}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>

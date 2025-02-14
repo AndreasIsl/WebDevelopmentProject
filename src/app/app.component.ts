@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,19 @@ export class AppComponent {
   currentUser: User | null = null;
   isLoggedIn = false;
   
-  public setCurrentUser(user: User): void {
-    this.currentUser = user;
+constructor(private authService: AuthService) {
+}
+
+  public setCurrentUser(): void {
+    this.authService.getProtectedData().subscribe(
+      (data) => {
+        this.currentUser = data;  // Die Antwort speichern
+        console.log('Daten empfangen:', data);
+      },
+      (error) => {
+        console.error('Fehler:', error);
+      }
+    );
     this.isLoggedIn = true;
   }
   
@@ -24,41 +36,9 @@ export class AppComponent {
   }
   
   public onLogout() {
+    this.authService.logout();
     this.isLoggedIn = false;
     this.currentUser = null;
-  }
-  
-  public async onLogin(UserName: any, Password: any) {
-    const isUserValid = await this.loadUser(UserName, Password);
-    if (isUserValid) {
-      console.log('Login successfull!');
-    } else {
-      console.error('Login failed!');
-    }
-  }
-  
-  private async loadUser(UserName: any, Password: any) {
-    return new Promise((resolve, reject) => {
-      fetch('http://localhost:5000/authen/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ UserName: UserName , Password: Password}),
-      }).then(async (response) => {
-        
-        if (response.ok) {
-          const data = await response.json();
-          this.setCurrentUser(new User(UserName, Password, data.email, data.image));
-
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      }).catch((err) => {
-        resolve(false);
-      });
-    })
   }
 }
 

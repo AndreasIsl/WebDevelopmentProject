@@ -62,7 +62,9 @@ export const routes: Routes = [
     {
         path: 'real-estate/detailed-search',
         component: DetailedPropertySearchComponent
-    }
+    },
+    // { path: 'protected', component: ProtectedComponent, canActivate: [AuthGuard] },
+
 ];
 
 @NgModule({

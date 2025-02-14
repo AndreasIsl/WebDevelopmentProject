@@ -4,9 +4,17 @@ import { createServer } from 'http';
 import { createTables } from './config/init.db';
 import { Pool } from 'pg';
 import pool from './config/db.config';
+import { Console } from 'console';
 
+const jwt = require('jsonwebtoken');
 const app = express();
 const port = Number(process.env['PORT']) || 5001;
+
+const SECRET_KEY = 'lets pretend that im a secret key very secure and not just a String in a file';
+
+interface AuthRequest extends Request {
+  user?: {username: string, password: string, email: string ,img: string[]}; // oder spezifischer: { username: string, role: string }
+}
 
 app.use(cors());
 app.use(express.json());
@@ -99,8 +107,7 @@ app.post('/api/listings', async (req, res) => {
   }
 });
 
-//-------------------->Register
-app.get('/authen', async (req, res) => {
+app.get('/listauth', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM authen');
     res.json(result.rows);
@@ -114,8 +121,9 @@ app.get('/authen', async (req, res) => {
   }
 });
 
+//-------------------->Register
 // register user
-app.post('/authen', async (req, res) => {
+app.post('/auth/register', async (req, res) => {
   try {
     const { UserName } = req.body;
     const { Password } = req.body;
@@ -138,99 +146,49 @@ app.post('/authen', async (req, res) => {
 });
 
 
-// Check if username already exists (username has to be unique)
-app.post('/authen/user', async (req, res) => {
-  try {
-    const { UserName } = req.body;
-    // Check if the username already exists
-    const userExistsQuery = await pool.query(
-      'SELECT * FROM authen WHERE UserName = $1',
-      [UserName]
-    );
-
-    if (userExistsQuery.rows.length > 0) {
-      // Username already exists
-      res.status(400).json({ error: 'Username already exists' });
-    }
-
-    res.status(200).json({ message: 'User does not exist, valid for registration' });
-  } catch (err) {
-    res.status(500).send('Server Error');
-  }
-});
-
 //-------------------->Login
 // login user
-app.post('/authen/user/login', async (req, res) => {
+app.get('/auth/login', async (req : any, res: any) => {
   try {
-    const { UserName } = req.body;
-    const { Password } = req.body;
-
+    const { username, password } = req.query; // Get query parameters
     const userExistsQuery = await pool.query(
       'SELECT * FROM authen WHERE username = $1',
-      [UserName]
+      [username]
     );
-
-    console.log(`${userExistsQuery.rows[0]}; name is ${UserName}; password is ${Password}`);
-    if (userExistsQuery.rows.length > 0) {
-      // Username exists
-      let doesPasswordMatch = userExistsQuery.rows[0].password === Password;
-      if (doesPasswordMatch) {
-        res.status(200).json({ message: 'Login successful' });
-      } else {
-        res.status(400).json({ message: 'Password is incorrect' });
-      }
+    if (userExistsQuery.rows.length > 0 && userExistsQuery.rows[0].password === password) {
+      console.log(userExistsQuery.rows);
+      const token = jwt.sign({ username: username, password: password, email: userExistsQuery.rows[2], image: userExistsQuery.rows[3] }, SECRET_KEY, { expiresIn: '1h' });
+      return res.status(200).json({ token });
     } else {
-      // Username does not exist
-      res.status(400).json({ message: 'User does not exist' });
+      return res.status(400).json({ message: 'Login data is incorrect' });
     }
   } catch (err) {
-    if (err instanceof Error) {
-      console.error(err.message);
-    } else {
-      console.error('Unknown error:', err);
-    }
-    res.status(500).send('Server Error');
+    return res.status(500).send('Server Error');
   }
 });
 
-// check login data
-app.get('/authen/user/login', async (req, res) => {
-  try {
-    const { UserName, Password } = req.query; // Get query parameters
-
-    if (!UserName || !Password) {
-       res.status(400).json({ message: 'Username and password are required' });
-    }
-
-    const userExistsQuery = await pool.query(
-      'SELECT * FROM authen WHERE username = $1',
-      [UserName]
-    );
-
-    console.log(`${userExistsQuery.rows[0]}; name is ${UserName}; password is ${Password}`);
-
-    if (userExistsQuery.rows.length > 0) {
-      // Username exists
-      let doesPasswordMatch = userExistsQuery.rows[0].password === Password;
-      if (doesPasswordMatch) {
-         res.status(200).json({ message: 'Login successful' });
-      } else {
-         res.status(400).json({ message: 'Password is incorrect' });
-      }
-    } else {
-      // Username does not exist
-       res.status(400).json({ message: 'User does not exist' });
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      console.error(err.message);
-    } else {
-      console.error('Unknown error:', err);
-    }
-     res.status(500).send('Server Error');
-  }
+// 🚀 Geschützte Route
+app.get('/auth/protected', verifyToken, (req: AuthRequest, res : any) => {
+  res.status(200).json({ message: 'Erfolgreicher Zugriff auf geschützte Daten', user: req.user });
 });
+
+// Middleware zur Token-Verifizierung
+function verifyToken(req : any, res : any, next: any) {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Kein Token vorhanden' });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err : any, decoded : any) => {
+    if (err) {
+      return res.status(403).json({ message: 'Ungültiges Token' });
+    }
+
+    req.user = decoded;
+    next();
+  });
+}
+
 
 //-------------------->Vehicles	
 app.get('/vehicles', async (req, res) => {

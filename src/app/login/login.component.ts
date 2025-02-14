@@ -4,6 +4,8 @@ import { RouterLink, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { AppComponent, User } from '../app.component';
+import { AuthService } from '../services/auth.service';
+import { log } from 'console';
 
 
 
@@ -18,61 +20,29 @@ import { AppComponent, User } from '../app.component';
 export class LoginComponent {
   loginForm: FormGroup;
   @ViewChild('notUniqueUserAlert') notUniqueUserAlert!: ElementRef<HTMLParagraphElement>;
+  errorMessage!: string;
 
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private appComponent: AppComponent) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private appComponent: AppComponent) {
     this.loginForm = this.fb.group({
-      userName: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
   async onSubmit() {
-    const userData = {
-      UserName: this.loginForm.value.userName,
-      Password: this.loginForm.value.password,
-    };
-    const isUserValid = await this.loginCheck(userData.UserName, userData.Password);
-
-    if (this.loginForm.valid && isUserValid) {
-      this.appComponent.onLogin(userData.UserName, userData.Password);
-      this.router.navigate(['']);
-    } else {
-
-    }
-
+    const { username, password } = this.loginForm.value;
+    this.authService.login(username, password).subscribe(
+      (res: any) => {
+        localStorage.setItem('token', res.token); // Speichert das Token
+        this.appComponent.setCurrentUser();
+        this.router.navigate(['']);
+        console.log('Login successfull!');
+      },
+      (err: any) => {
+        this.errorMessage = 'Login failed!';
+      }
+    )
   }
-
-  loginCheck(username: string, password: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      fetch(`http://localhost:5000/authen/user/login?UserName=${username}&Password=${password}`, {
-        method: 'GET',
-      }).then(async (response) => {
-        if (!response.ok) {
-          console.error('Error: User already exists');
-          this.notUniqueUserAlert.nativeElement.style.display = 'block';
-          resolve(false);
-        } else {
-          console.log(`Login data matches user`);
-          resolve(true);
-        }
-      }).catch((err) => {
-        console.error('Network error:', err);
-        alert('Failed to communicate with the server');
-        resolve(false);
-      });
-    })
-  }
-
-  closeAlert() {
-
-    if (this.notUniqueUserAlert) {
-
-      this.notUniqueUserAlert.nativeElement.style.display = 'none';
-    } else {
-      console.error('Element not found: notUniqueUserAlert');
-    }
-  }
-
 }
 

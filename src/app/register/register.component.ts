@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent, User } from '../app.component';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-register',
   imports: [RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule, HttpClientModule,],
@@ -17,12 +18,16 @@ import { AppComponent, User } from '../app.component';
 export class RegisterComponent {
   registerForm: FormGroup;
   @ViewChild('notUniqueUserAlert') notUniqueUserAlert!: ElementRef<HTMLParagraphElement>;
-  
+  errorMessage!: string;
+  successMessage: string = '';
+
+
+
   get passwordErrors(): { [key: string]: any } {
     return this.registerForm.get('password')?.errors || {};
   }
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private appComponent: AppComponent) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private appComponent: AppComponent,private authService: AuthService) {
     this.registerForm = this.fb.group({
       userName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
       email: ['', [Validators.required, Validators.email]],
@@ -36,26 +41,28 @@ export class RegisterComponent {
   }
 
   async onSubmit() {
-    const userData = {
-      UserName: this.registerForm.value.userName,
-      Password: this.registerForm.value.password,
-      Email: this.registerForm.value.email
-    };
+    const { username, password, email } = this.registerForm.value;
 
-    const isUserValid = await this.checkIfUserExists(userData.UserName);
+    const isUserValid = await this.checkIfUserExists(username);
 
-    if (this.registerForm.valid && isUserValid) {
-      this.apiService.addItem(userData).subscribe({
-        next: (response) => {
-          console.log('Form Submitted! API Response:', response);
-          const user = new User(userData.UserName, userData.Password, userData.Email, '');
-          this.appComponent.setCurrentUser(user);
-          this.router.navigate(['']);
+    if  (isUserValid){
+      this.authService.register(username, password, email).subscribe(
+        () => {
+          this.successMessage = 'Register success!';
+          this.authService.login(username, password).subscribe(
+            (res: any) => {
+              localStorage.setItem('token', res.token); // Speichert das Token
+              this.router.navigate(['']);
+            },
+            (err: any) => {
+              this.errorMessage = 'Login failed!';
+            }
+          )
         },
-        error: (err) => {
-          console.error('Fehler bei der API-Anfrage:', err);
+        () => {
+          this.errorMessage = 'Register failed.';
         }
-      });
+      );  
     } else {
       console.error('Error: Register didnt work');
     }

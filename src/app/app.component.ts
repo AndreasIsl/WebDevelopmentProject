@@ -8,7 +8,7 @@ import { AuthService } from './services/auth.service';
   standalone: true,
   imports: [RouterOutlet, RouterLink, CommonModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', './global.css']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'HabenWollen';

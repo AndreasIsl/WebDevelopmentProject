@@ -16,7 +16,7 @@
                             <p>{{vehicle.preis}} €</p>
                             <p>{{vehicle.kilometerstand}} km</p>
                             <p>{{vehicle.baujahr}}</p>
-                            <button class="more_button" routerLink="/vehicles/details">More</button>
+                            <button class="more_button" (click)="goToDetail(vehicle.id)">More</button>
                         </div>
                     </div>
                 </li>

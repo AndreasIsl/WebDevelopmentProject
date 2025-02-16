@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { log } from 'console';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-vehicles',
   imports: [NgIf, CommonModule, FormsModule, ReactiveFormsModule],
@@ -18,7 +19,7 @@ export class VehiclesComponent {
   manufactoringDates: number[] = [];
   ids: number[] = [];
 
-  constructor(private fb: FormBuilder,private cd: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder,private cd: ChangeDetectorRef,private router: Router) {
     this.getVehicles();
     this.filterForm = this.fb.group({
       Ids:[''],
@@ -84,4 +85,7 @@ export class VehiclesComponent {
     this.isVisible = !this.isVisible;
   }
 
+  goToDetail(id : number) {
+    this.router.navigate(['vehicle-detail', id]);
+  }
 }

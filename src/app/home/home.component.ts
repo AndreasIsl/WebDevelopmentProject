@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -9,34 +10,34 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-slideRight() {
-throw new Error('Method not implemented.');
-}
-slideLeft() {
-throw new Error('Method not implemented.');
-}
+  slideRight() {
+    throw new Error('Method not implemented.');
+  }
+  slideLeft() {
+    throw new Error('Method not implemented.');
+  }
   vehicles: any[] = [];
   real_estate: any[] = [];
-
-  constructor() {
+  
+  constructor(private router: Router) {
     this.getVehicles();
     // this.getRealEstate();
   }
-
+  
   async getVehicles() {
     try {
       const response = await fetch('http://localhost:5000/vehicles');
       const data = await response.json();
       this.vehicles = data;
-
+      
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+      
       console.log(data);
-
+      
       this.setPlaceholderImage();
-     } catch (err) {
+    } catch (err) {
       console.error(err);
     }
   }
@@ -50,7 +51,11 @@ throw new Error('Method not implemented.');
       }
     })
   }
-
+  
   async getRealEstate() {
+  }
+
+  goToDetail(id : number) {
+    this.router.navigate(['vehicle-detail', id]);
   }
 }

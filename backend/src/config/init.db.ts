@@ -29,6 +29,40 @@ export async function createTables() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+    
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS listings (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        property_type VARCHAR(50) NOT NULL,
+        listing_type VARCHAR(50) NOT NULL,
+        price NUMERIC NOT NULL,
+        location JSONB NOT NULL,
+        specifications JSONB NOT NULL,
+        features JSONB NOT NULL,
+        contact JSONB NOT NULL,
+        images TEXT[] NOT NULL,
+        description TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+   
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS listings (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        property_type VARCHAR(50) NOT NULL,
+        listing_type VARCHAR(50) NOT NULL,
+        price NUMERIC NOT NULL,
+        location JSONB NOT NULL,
+        specifications JSONB NOT NULL,
+        features JSONB NOT NULL,
+        contact JSONB NOT NULL,
+        images TEXT[] NOT NULL,
+        description TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
     console.log('Tables initialized successfully');
     
     await pool.end();

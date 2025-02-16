@@ -8,7 +8,7 @@ import { Console } from 'console';
 
 const jwt = require('jsonwebtoken');
 const app = express();
-const port = Number(process.env['PORT']) || 5001;
+const port =  5001;
 
 const SECRET_KEY = 'lets pretend that im a secret key very secure and not just a String in a file';
 
@@ -230,7 +230,7 @@ app.post('/vehicle', async (req: any, res: any) => {
 // Generell logic
 
 //server start msg
-app.listen(5000, () => console.log('Server started on port 5000'));
+app.listen(port, () => console.log(`Server started on port ${port}`));	
 
 // Shutdown-Handler
 const shutdownHandler = (signal: string) => {

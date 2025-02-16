@@ -26,7 +26,7 @@ export class HomeComponent {
   
   async getVehicles() {
     try {
-      const response = await fetch('http://localhost:5000/vehicles');
+      const response = await fetch('http://localhost:5001/vehicles');
       const data = await response.json();
       this.vehicles = data;
       

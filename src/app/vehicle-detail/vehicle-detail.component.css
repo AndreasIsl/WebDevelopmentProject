@@ -1,0 +1,56 @@
+
+
+form *{
+    margin: 10px 10px 10px 10px;
+}
+
+legend{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn{
+    margin-right: 20px;
+    margin-block-end: 20px;
+}
+
+.vehicle_detail_container{
+    padding: 30px;
+    background-color: var(--content-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    width: calc(100% - 50px);
+
+}
+
+.container{
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ 
+#image_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+h2{
+    font-size: 48px;
+    font-weight: bold;
+}
+
+button{
+    width: 100px;
+}
+
+img{
+    width: 30%;
+    height: 30%;
+    border-radius: 10px;
+}

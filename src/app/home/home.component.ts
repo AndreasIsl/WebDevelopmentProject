@@ -61,4 +61,8 @@ throw new Error('Method not implemented.');
   goToDetail(id : number) {
     this.router.navigate(['vehicle-detail', id]);
   }
+  
+  goToNewListing() {
+    this.router.navigate(['new-listing']);
+  }
 }

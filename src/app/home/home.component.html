@@ -1,11 +1,11 @@
 <div id="home_container">
     <h1>Real estates</h1>
     <div class="real_estate_container slideshow_container">
-        
+
     </div>
     <h1>Vehicles</h1>
     <div class="vehicle_container slideshow_container">
-        <button id="vehicle_left" class="slider_button" (click)="slideLeft()"><</button>
+        <button id="vehicle_left" class="slider_button" (click)="slideLeft()"></button>
         <div id="vehicle_content">
             <ul>
                 <li *ngFor="let vehicle of vehicles">
@@ -22,8 +22,7 @@
                 </li>
             </ul>
         </div>
-            <button id="vehicle_right" class="slider_button" (click)="slideRight()">></button>
+        <button id="vehicle_right" class="slider_button" (click)="slideRight()">></button>
     </div>
-    <button id="add_data_btn"  (click)="addData()">+</button >
-
+    <button id="add_data_btn" (click)="goToNewListing()">+</button>
 </div>

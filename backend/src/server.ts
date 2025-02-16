@@ -212,6 +212,21 @@ app.get('/vehicles', async (req, res) => {
   }
 });
 
+app.post('/vehicle', async (req: any, res: any) => {
+  try {
+    const { id } = req.body;
+    const result = await pool.query('SELECT * FROM vehicles WHERE id = $1', [id]);
+    return res.status(200).json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return res.status(500).send('Server Error');
+  }
+});
+
 // Generell logic
 
 //server start msg

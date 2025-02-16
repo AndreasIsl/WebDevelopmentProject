@@ -11,6 +11,7 @@ import { DetailedPropertySearchComponent } from './real-estate/property-search/d
 import { NewListingComponent } from './new-listing/new-listing.component';
 import { NewRealEstateListingComponent } from './new-listing/new-real-estate-listing/new-real-estate-listing.component';
 import { RealEstateListComponent } from './real-estate/real-estate-list/real-estate-list.component';
+import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,10 @@ export const routes: Routes = [
     { 
         path: 'vehicles', 
         component: VehiclesComponent 
+    },
+    { 
+        path: 'vehicle-detail/:id', 
+        component: VehicleDetailComponent 
     },
     { 
         path: 'real-estate', 

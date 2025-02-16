@@ -7,7 +7,6 @@
         </button>
     </div>
     <div id="vehicle_filters">
-
         <div id="vehicle_filters_achordeon" *ngIf="isVisible" ngClass="{'show': isVisible}">
             <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
                 <div>
@@ -60,6 +59,7 @@
                         <p>{{vehicle.preis}} €</p>
                         <p>{{vehicle.kilometerstand}} km</p>
                         <p>{{vehicle.baujahr}}</p>
+                        <button class="more_button" routerLink="/vehicles/details">More</button>
                     </div>
                 </div>
             </li>

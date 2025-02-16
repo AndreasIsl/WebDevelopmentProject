@@ -5,3 +5,47 @@ body {
     padding: 0;
 }
 
+:root{
+    --primary-color: #333;
+    --btn-color: #3e3e3e;
+    --whitespace-color: #f7f7f7;
+    --secondary-color: #9d9c9c;
+    --tertiary-color: #be7200;
+    --content-color: #33333341;
+}
+
+h1{
+    color: var(--tertiary-color);
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+input,button{
+    border: 2px solid transparent;
+}
+
+button {
+    border: 2px solid transparent;
+    cursor: pointer;
+    background-color: var(--btn-color);
+    color: var(--tertiary-color);
+    font-weight: bolder;
+    font-size: larger;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+button:hover, input:hover {
+    border: 2px solid var(--tertiary-color);
+    /* color: var(--tertiary-color); */
+}
+
+.more_button{
+    background-color: var(--primary-color);
+    color: var(--tertiary-color);
+    font-weight: bolder;
+    font-size: larger;
+    border-radius: 5px;
+    float: right;
+    padding: 5px;
+}

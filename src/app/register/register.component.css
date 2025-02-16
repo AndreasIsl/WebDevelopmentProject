@@ -5,3 +5,34 @@
 #notUniqueUserAlert{
     display: none;
 }
+
+form{
+    background-color: var(--content-color);
+    padding: 20px;
+}
+
+form *{
+    margin: 10px 10px 10px 10px;
+}
+
+legend{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn{
+    margin-right: 20px;
+    margin-block-end: 20px;
+}
+
+.container{
+    padding: 30px;
+}
+ 
+label{
+    display: block;
+}
+
+a{
+    color: var(--tertiary-color);
+}

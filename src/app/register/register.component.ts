@@ -4,7 +4,6 @@ import { RouterLink, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent, User } from '../app.component';
 import { AuthService } from '../services/auth.service';
@@ -13,7 +12,7 @@ import { AuthService } from '../services/auth.service';
   imports: [RouterLink, CommonModule, NgIf, FormsModule, ReactiveFormsModule, HttpClientModule,],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
-  providers: [ApiService,]
+  providers: []
 })
 export class RegisterComponent {
   registerForm: FormGroup;
@@ -27,9 +26,9 @@ export class RegisterComponent {
     return this.registerForm.get('password')?.errors || {};
   }
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private appComponent: AppComponent,private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private appComponent: AppComponent,private authService: AuthService) {
     this.registerForm = this.fb.group({
-      userName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), passwordValidator]],
       confirmPassword: ['', Validators.required]
@@ -42,55 +41,17 @@ export class RegisterComponent {
 
   async onSubmit() {
     const { username, password, email } = this.registerForm.value;
-
-    const isUserValid = await this.checkIfUserExists(username);
-
-    if  (isUserValid){
       this.authService.register(username, password, email).subscribe(
-        () => {
+        (res: any) => {
           this.successMessage = 'Register success!';
-          this.authService.login(username, password).subscribe(
-            (res: any) => {
-              localStorage.setItem('token', res.token); // Speichert das Token
-              this.router.navigate(['']);
-            },
-            (err: any) => {
-              this.errorMessage = 'Login failed!';
-            }
-          )
+          localStorage.setItem('token', res.token); // Speichert das Token
+          this.appComponent.setCurrentUser();
+          this.router.navigate(['']);
         },
-        () => {
+        (err: any) => {
           this.errorMessage = 'Register failed.';
         }
       );  
-    } else {
-      console.error('Error: Register didnt work');
-    }
-  }
-
-  checkIfUserExists(username: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      fetch('http://localhost:5000/authen/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ UserName: username }),
-      }).then(async (response) => {
-        if (!response.ok) {
-          console.error('Error: User already exists');
-          this.notUniqueUserAlert.nativeElement.style.display = 'block';
-          resolve(false);
-        } else {
-          console.log('Log: No Error   found valid user');
-          resolve(true);
-        }
-      }).catch((err) => {
-        console.error('Network error:', err);
-        alert('Failed to communicate with the server');
-        resolve(false);
-      });
-    })
   }
 
   closeAlert() {

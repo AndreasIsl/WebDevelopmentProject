@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 
@@ -8,14 +8,14 @@ import { AuthService } from './services/auth.service';
   standalone: true,
   imports: [RouterOutlet, RouterLink, CommonModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css', './global.css']
 })
 export class AppComponent {
   title = 'HabenWollen';
   currentUser: User | null = null;
   isLoggedIn = false;
   
-constructor(private authService: AuthService) {
+constructor(private authService: AuthService, private router: Router) {
 }
 
   public setCurrentUser(): void {
@@ -39,6 +39,7 @@ constructor(private authService: AuthService) {
     this.authService.logout();
     this.isLoggedIn = false;
     this.currentUser = null;
+    this.router.navigate(['']);
   }
 }
 

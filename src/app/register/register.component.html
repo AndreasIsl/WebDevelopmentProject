@@ -2,7 +2,7 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="userName">UserName</label>
-        <input type="text" class="form-control" id="userName" formControlName="userName" (input)="closeAlert()">
+        <input type="text" class="form-control" id="userName" formControlName="username" (input)="closeAlert()">
         <div >
             <small *ngIf="registerForm.get('userName')?.invalid && (registerForm.get('userName')?.dirty || registerForm.get('userName')?.touched)" class="formAlert">
                 Username is required and should contain only letters and numbers.

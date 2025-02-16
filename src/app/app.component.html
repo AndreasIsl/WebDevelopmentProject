@@ -1,4 +1,4 @@
-<div id="main">
+ <div id="main">
 
     <header>
         <h1> MÖCHTEHABEN </h1>
@@ -10,7 +10,7 @@
             </div>
             <div *ngIf="isLoggedIn" class="userControl">
                 <button routerLink="/profile">Profile</button>
-                <button onclick="onLogout()">Logout</button>
+                <button (click)="onLogout()">Logout</button>
             </div>
             <button routerLink="">Home</button>
             <button routerLink="/vehicles">Vehicles</button>

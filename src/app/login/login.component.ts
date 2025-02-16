@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
-import { ApiService } from '../api.service';
 import { AppComponent, User } from '../app.component';
 import { AuthService } from '../services/auth.service';
 import { log } from 'console';
@@ -15,7 +14,7 @@ import { log } from 'console';
   imports: [RouterLink, CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [ApiService]
+  providers: []
 })
 export class LoginComponent {
   loginForm: FormGroup;

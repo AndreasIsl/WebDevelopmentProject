@@ -123,25 +123,32 @@ app.get('/listauth', async (req, res) => {
 
 //-------------------->Register
 // register user
-app.post('/auth/register', async (req, res) => {
+app.post('/auth/register', async (req: any, res: any) => {
   try {
-    const { UserName } = req.body;
-    const { Password } = req.body;
-    const { Email } = req.body;
+    const { username } = req.body;
+    const { password } = req.body;
+    const { email } = req.body;
+
+    const checkUser = await pool.query( 'SELECT * FROM authen WHERE username = $1', [username]);
+    if (checkUser.rows.length > 0) {
+      return res.status(400).json({ message: 'User already exists' });  
+    }
 
     const result = await pool.query(
-      'INSERT INTO authen (UserName,Password,Email) VALUES ($1, $2, $3) RETURNING *',
-      [UserName, Password, Email]
+      'INSERT INTO authen (username,password,email) VALUES ($1, $2, $3) RETURNING *',
+      [username, password, email]
     );
-    res.json(result.rows[0]);
     console.log('User registered');
+
+    const token = jwt.sign({ username: username, password: password, email: email }, SECRET_KEY, { expiresIn: '1h' });
+    return res.status(200).json({ token });
   } catch (err) {
     if (err instanceof Error) {
       console.error(err.message);
     } else {
       console.error('Unknown error:', err);
     }
-    res.status(500).send('Server Error');
+    return res.status(500).send('Server Error');
   }
 });
 

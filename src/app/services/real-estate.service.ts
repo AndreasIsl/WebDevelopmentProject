@@ -10,7 +10,7 @@ export type ListingType = 'sale' | 'rent';
   providedIn: 'root'
 })
 export class RealEstateService {
-  private apiUrl = 'http://localhost:3001/api/listings';
+  private apiUrl = 'http://localhost:5001/api/listings';
 
   constructor(private http: HttpClient) {
     // Add test listing immediately when service is created

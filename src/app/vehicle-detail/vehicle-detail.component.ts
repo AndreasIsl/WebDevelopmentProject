@@ -23,7 +23,7 @@ export class VehicleDetailComponent implements OnInit {
   async getVehicle() {
     try {
       console.log('Fahrzeug-ID:', this.vehicleId);
-      const response = await fetch('http://localhost:5000/vehicle', {
+      const response = await fetch('http://localhost:5001/vehicle', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json'

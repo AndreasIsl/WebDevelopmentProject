@@ -13,9 +13,9 @@
                     <fieldset>
                         <legend>Brands</legend>
                         <ul class="filter_list">
-                            <li *ngFor="let brand of brands">
+                            <li *ngFor="let brand of brands; let i = index">
                                 <label for="{{brand}}">{{brand}}</label>
-                                <input type="checkbox" id="{{brand}}" formControlName="{{brand}}">
+                                <input type="checkbox" id="{{brand}}" formControlName="{{i}}">
                             </li>
                         </ul>
                     </fieldset>
@@ -32,9 +32,9 @@
                     </fieldset>
                     <fieldset>
                         <legend>Ids</legend>
-                        <input type="text" list="ids" formControlName="Ids" />
+                        <input type="text" list="ids" formControlName="id" id="id" />
                         <datalist id="ids">
-                            <option *ngFor="let id of ids" value="{{id}}">
+                            <option *ngFor="let id of ids" value="{{id}}"></option>
                         </datalist>
                     </fieldset>
                 </div>

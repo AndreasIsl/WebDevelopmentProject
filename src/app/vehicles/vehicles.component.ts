@@ -57,6 +57,7 @@ export class VehiclesComponent {
   }
 
 
+  
   fillFilterArrays() {
     this.vehicles.forEach((vehicle) => {
       if (this.brands.length <= 10) {
@@ -75,7 +76,9 @@ export class VehiclesComponent {
   }
 
   onSubmit() {
-    throw new Error('Method not implemented.');
+    const { brand, manufactoringDate, id } = this.filterForm.value;
+    console.log(`Brand: ${brand}, Manufactoring Date: ${manufactoringDate}, Id: ${id}`);
+
   }
 
   searchVehicle() {

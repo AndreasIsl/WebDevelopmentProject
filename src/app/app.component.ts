@@ -12,16 +12,21 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'HabenWollen';
-  currentUser: User | null = null;
+  emptyUser: User = new User( '', '', '', '', 0);
+  currentUser: User = this.emptyUser;
   isLoggedIn = false;
   
-constructor(private authService: AuthService, private router: Router) {
-}
+  constructor(private authService: AuthService, private router: Router) {
+    if (this.authService.isAuthenticated()) {
+      this.setCurrentUser();
+    }
+  }
 
-  public setCurrentUser(): void {
+  public setCurrentUser(): User {
     this.authService.getProtectedData().subscribe(
       (data) => {
-        this.currentUser = data;  // Die Antwort speichern
+
+        this.currentUser = new User(data.user.username, data.user.password, data.user.email, data.user.image, data.user.id); 
         console.log('Daten empfangen:', data);
       },
       (error) => {
@@ -29,16 +34,20 @@ constructor(private authService: AuthService, private router: Router) {
       }
     );
     this.isLoggedIn = true;
+    return this.currentUser;
   }
   
-  public getCurrentUser(): User | null {
+  public getCurrentUser(): User {
+    if (this.authService.isAuthenticated() && !this.isLoggedIn) {
+      return this.setCurrentUser()
+    }
     return this.currentUser;
   }
   
   public onLogout() {
     this.authService.logout();
     this.isLoggedIn = false;
-    this.currentUser = null;
+    this.currentUser = this.emptyUser;
     this.router.navigate(['']);
   }
 }
@@ -48,7 +57,8 @@ export class User {
     private name: string,
     private password: string,
     private email: string,
-    private image: string
+    private image: string,
+    private id: number
   ) {}
 
   public getName(): string {
@@ -76,10 +86,22 @@ export class User {
   }
 
   public getImage(): string {
-    return this.image;
+    if (this.image === null) {
+      return '../assets/images/user.jpg';
+    } else {
+      return this.image;
+    }
   }
 
   public setImage(image: string): void {
     this.image = image;
+  }
+
+  public getId(): number {
+    return this.id;
+  }
+
+  public setId(id: number): void {
+    this.id = id;
   }
 }

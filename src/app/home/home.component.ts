@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -10,9 +11,9 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-addData() {
-throw new Error('Method not implemented.');
-}
+  addData() {
+    throw new Error('Method not implemented.');
+  }
   slideRight() {
     throw new Error('Method not implemented.');
   }
@@ -21,30 +22,30 @@ throw new Error('Method not implemented.');
   }
   vehicles: any[] = [];
   real_estate: any[] = [];
-  
-  constructor(private router: Router) {
+
+  constructor(private router: Router, private appComponent: AppComponent) {
     this.getVehicles();
     // this.getRealEstate();
   }
-  
+
   async getVehicles() {
     try {
       const response = await fetch('http://localhost:5001/vehicles');
       const data = await response.json();
       this.vehicles = data;
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      
+
       console.log(data);
-      
+
       this.setPlaceholderImage();
     } catch (err) {
       console.error(err);
     }
   }
-  
+
   setPlaceholderImage() {
     this.vehicles.forEach((vehicle) => {
       if (vehicle.bilder.length == 0) {
@@ -54,15 +55,20 @@ throw new Error('Method not implemented.');
       }
     })
   }
-  
+
   async getRealEstate() {
   }
 
-  goToDetail(id : number) {
+  goToDetail(id: number) {
     this.router.navigate(['vehicle-detail', id]);
   }
-  
+
   goToNewListing() {
-    this.router.navigate(['new-listing']);
+    if (this.appComponent.isLoggedIn) {
+      this.router.navigate(['new-listing']);
+    } else {
+      this.router.navigate(['login']);
+    }
+
   }
 }

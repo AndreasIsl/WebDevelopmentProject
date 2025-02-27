@@ -1,0 +1,74 @@
+#profile_content{
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
+
+#profile_container{
+    background-color:  var(--content-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 90%;
+    min-height: fit-content;
+    padding: 20px;
+}
+
+#profile_container img{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+#profile_container div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    padding: 10px;
+}
+
+ul{
+    list-style-type: none;
+    padding: 30px;
+}
+
+ul li{
+    background-color: var(--content-color); 
+    padding: 10px;
+    border: 2px solid var(--tertiary-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+ul li img{
+    width: 200px;
+    height: 200px;
+}
+
+.delete_button{
+  float: right;
+  background-color: var(--tertiary-color);
+  color: var(--primary-color);
+  font-weight: bolder;
+}
+.delete_button:hover{
+    border: 2px solid var(--primary-color);
+}
+
+#item_buttons{
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    padding: 10px;
+    gap: 10px;
+}
+
+#item_buttons button{
+    max-height: 20%;
+
+}

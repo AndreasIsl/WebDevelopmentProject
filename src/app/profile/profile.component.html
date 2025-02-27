@@ -1,1 +1,30 @@
-<p>profile works!</p>
+<div id="profile_content">
+    <h2>Your Profile</h2>
+    <div id="profile_container">
+        <img [src]=" user.getImage()" alt="avatar" >
+
+        <div>
+            <p>Username: {{ user.getName() }}</p>
+            <p>Email: {{ user.getEmail() }}</p>
+            <p>Password: {{ user.getPassword() }}</p>
+        </div>
+
+        <button (click)="editProfile()">Edit Profile</button>
+    </div>
+    <h2>Your Items</h2>
+    <ul>
+        <li *ngFor="let item of userItems">
+            <img src="{{item.Image}}" alt="item Image" width="100" height="100">
+            <div id="item_info">
+                <p>{{item.marke}} {{item.modell}}</p>
+                <p>{{item.kilometerstand}} km</p>
+                <p>{{item.baujahr}}</p>
+                <p>{{item.preis}} €</p>
+            </div>
+            <div id="item_buttons">
+                <button class="delete_button" (click)="deleteItem(item.id)">Delete</button>
+                <button class="more_button" (click)="goToDetail(item.id)">More</button>
+            </div>
+        </li>
+    </ul>
+</div>

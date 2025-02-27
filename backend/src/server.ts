@@ -134,14 +134,17 @@ app.post('/auth/register', async (req: any, res: any) => {
       return res.status(400).json({ message: 'User already exists' });  
     }
 
+    let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM authen');
+    const id = idQuery.rows[0].groesste_id + 1;
+
     const result = await pool.query(
-      'INSERT INTO authen (username,password,email) VALUES ($1, $2, $3) RETURNING *',
-      [username, password, email]
+      'INSERT INTO authen (username,password,email,id) VALUES ($1, $2, $3, $4) RETURNING *',
+      [username, password, email, id]
     );
     console.log('User registered');
 
-    const token = jwt.sign({ username: username, password: password, email: email }, SECRET_KEY, { expiresIn: '1h' });
-    return res.status(200).json({ token });
+    const token = jwt.sign({ username: username, password: password, email: email ,id: id }, SECRET_KEY, { expiresIn: '1h' });
+    return res.status(200).json({ token, id });
   } catch (err) {
     if (err instanceof Error) {
       console.error(err.message);
@@ -164,8 +167,12 @@ app.get('/auth/login', async (req : any, res: any) => {
     );
     if (userExistsQuery.rows.length > 0 && userExistsQuery.rows[0].password === password) {
       console.log(userExistsQuery.rows);
-      const token = jwt.sign({ username: username, password: password, email: userExistsQuery.rows[2], image: userExistsQuery.rows[3] }, SECRET_KEY, { expiresIn: '1h' });
-      return res.status(200).json({ token });
+      const email = userExistsQuery.rows[0].email;
+      const image = userExistsQuery.rows[0].image;
+      const id = userExistsQuery.rows[0].id;
+
+      const token = jwt.sign({ username: username, password: password, email: email, image: image, id: id }, SECRET_KEY, { expiresIn: '1h' });
+      return res.status(200).json({ token, id });
     } else {
       return res.status(400).json({ message: 'Login data is incorrect' });
     }
@@ -227,7 +234,41 @@ app.post('/vehicle', async (req: any, res: any) => {
   }
 });
 
-// Generell logic
+//getvehicle by CreatorId
+app.post('/vehicles/creatorid', async (req: any, res: any) => {
+  try {
+    const { id } = req.body;
+    const result = await pool.query('SELECT * FROM vehicles WHERE ersteller_id = $1', [id]);
+    return res.status(200).json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return res.status(500).send('Server Error');
+  }
+});
+
+//delete by id
+app.delete('/vehicles/:id', async (req: any, res: any) => {
+  try {
+    const id = req.params.id;
+    const result = await pool.query('DELETE FROM vehicles WHERE id = $1', [id]);
+    console.log(id);
+    return res.status(200).json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return res.status(500).send('Server Error');
+  }
+});
+
+
+//-------------------->Generell logic
 
 //server start msg
 app.listen(port, () => console.log(`Server started on port ${port}`));	

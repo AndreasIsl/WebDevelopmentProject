@@ -10,8 +10,13 @@ import { Router } from '@angular/router';
 })
 export class NewListingComponent {
   constructor(private router: Router) {}
-
+  
   navigateToNewRealEstateListing() {
     this.router.navigate(['/new-listing/new-real-estate-listing']);
+  }
+  
+  navigateToNewVehicleListing() {
+    this.router.navigate(['/new-listing/new-vehicle-listing']);
+
   }
 }

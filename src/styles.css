@@ -20,6 +20,11 @@ h1{
     font-weight: bolder;
 }
 
+h2{
+    font-size: 3em;
+    font-weight: bolder;
+}
+
 input,button{
     border: 2px solid transparent;
 }

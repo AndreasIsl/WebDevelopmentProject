@@ -33,7 +33,8 @@ export class LoginComponent {
     const { username, password } = this.loginForm.value;
     this.authService.login(username, password).subscribe(
       (res: any) => {
-        localStorage.setItem('token', res.token); // Speichert das Token
+        localStorage.setItem('token', res.token);
+
         this.appComponent.setCurrentUser();
         this.router.navigate(['']);
         console.log('Login successfull!');

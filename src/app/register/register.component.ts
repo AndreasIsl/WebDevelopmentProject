@@ -44,7 +44,7 @@ export class RegisterComponent {
       this.authService.register(username, password, email).subscribe(
         (res: any) => {
           this.successMessage = 'Register success!';
-          localStorage.setItem('token', res.token); // Speichert das Token
+          localStorage.setItem('token', res.token); 
           this.appComponent.setCurrentUser();
           this.router.navigate(['']);
         },

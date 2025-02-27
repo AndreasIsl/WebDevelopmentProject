@@ -12,6 +12,7 @@ import { NewListingComponent } from './new-listing/new-listing.component';
 import { NewRealEstateListingComponent } from './new-listing/new-real-estate-listing/new-real-estate-listing.component';
 import { RealEstateListComponent } from './real-estate/real-estate-list/real-estate-list.component';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
+import { VehicleListingComponent } from './new-listing/vehicle-listing/vehicle-listing.component';
 
 export const routes: Routes = [
     {
@@ -55,6 +56,10 @@ export const routes: Routes = [
     {
         path: 'new-listing',
         component: NewListingComponent
+    },
+    {
+        path: 'new-listing/new-vehicle-listing',
+        component: VehicleListingComponent
     },
     {
         path: 'new-listing/new-real-estate-listing',

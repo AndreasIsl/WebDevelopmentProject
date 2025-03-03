@@ -250,6 +250,27 @@ app.post('/vehicles/creatorid', async (req: any, res: any) => {
   }
 });
 
+//addvehicle
+app.post('/vehicles/newvehicle', async (req: any, res: any) => {
+  try {
+    const { brand,model,manufactoringDate,mileage,price,creatorID } = req.body;
+    let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM vehicle');
+    const id = idQuery.rows[0].groesste_id + 1;
+
+    const result = await pool.query(`INSERT INTO public.vehicles(
+	id, marke, modell, baujahr, kilometerstand, kraftstoff, getriebe, preis, bilder, ersteller_id, erstelllt_am)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [id]);
+    return res.status(200).json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return res.status(500).send('Server Error');
+  }
+});
+
 //delete by id
 app.delete('/vehicles/:id', async (req: any, res: any) => {
   try {

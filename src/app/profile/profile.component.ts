@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup,Validators, FormsModule, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AppComponent, User } from '../app.component';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -8,20 +8,35 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,NgIf],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  
-  user: User = new User( '', '',  '', '', 0 );
+profileEditForm: FormGroup;
+
+user: User = new User( '', '',  '', '', 0 );
   userItems: any = [];
+editing: any;
   
   
-  constructor(private appComponent: AppComponent, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder,private appComponent: AppComponent, private authService: AuthService, private router: Router) {
+     this.profileEditForm = this.fb.group({
+          username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
+          email: ['', [Validators.required, Validators.email]],
+          password: ['', [Validators.required, Validators.minLength(8), passwordValidator]],
+          confirmPassword: ['', Validators.required]
+        }, { validators: confirmPasswordValidator });
   }
   
-  
+  get passwordErrors(): { [key: string]: any } {
+    return this.profileEditForm.get('password')?.errors || {};
+  }
+
+  get profileEditFormErrors() {
+    return this.profileEditForm.errors;
+  }
+
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
       this.authService.getProtectedData().subscribe(
@@ -49,11 +64,11 @@ export class ProfileComponent {
         },
         body: JSON.stringify({ id: this.user.getId() }), // Hier getId als Funktion aufrufen
       });
-  
+      
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+      
       const data = await response.json(); // JSON aus der Response parsen
       console.log("Antwort:", data[0]);
       this.userItems = data;
@@ -61,6 +76,10 @@ export class ProfileComponent {
     } catch (error) {
       console.error("Fehler:", error);
     }
+  }
+  
+  onSubmit() {
+    throw new Error('Method not implemented.');
   }
 
   deleteItem(id : number) {
@@ -98,4 +117,31 @@ export class ProfileComponent {
   goToDetail(id : number) {
     this.router.navigate(['vehicle-detail', id]);
   }
+
+  
+}
+
+export function confirmPasswordValidator(group: AbstractControl): ValidationErrors | null {
+  const password = group.get('password')?.value;
+  const confirmPassword = group.get('confirmPassword')?.value;
+  if (password !== confirmPassword) {
+    return { passwordMismatch: 'Passwörter stimmen nicht überein' };
+  }
+  return null;
+}
+
+export function passwordValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+
+  if (!value) {
+    return null; // Kein Fehler, wenn das Feld leer ist (für Required separat prüfen)
+  }
+
+  // Bedingungen prüfen
+  const hasUpperCase = /[A-Z]/.test(value);
+  const hasNumber = /[0-9]/.test(value);
+
+  const passwordValid = hasUpperCase && hasNumber;
+
+  return !passwordValid ? { passwordStrength: 'Das Passwort muss mindestens einen Großbuchstaben und eine Zahl enthalten' } : null;
 }

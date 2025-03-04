@@ -25,6 +25,34 @@ export class VehicleListingComponent {
   }
   
   onSubmit() {
-    throw new Error('Method not implemented.');
+    const insertVehicle = async ()=>{
+      try {
+        const { brand,model,manufactoringDate,mileage,price } = this.vehicleListingForm.value;
+        const response = await fetch("http://localhost:5001/vehicles/newvehicle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            brand: brand,
+            model: model,
+            manufactoringDate: manufactoringDate,
+            mileage: mileage,
+            price: price,
+            creatorID: this.appComponent.currentUser.getId 
+          }),        
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        this.router.navigate(['']);
+      } catch (error) {
+        console.error("Fehler:", error);
+      }
+    }
+
+    insertVehicle();
   }
 }

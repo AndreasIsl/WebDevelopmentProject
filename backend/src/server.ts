@@ -135,7 +135,7 @@ app.post('/auth/register', async (req: any, res: any) => {
     }
 
     let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM authen');
-    const id = idQuery.rows[0].groesste_id + 1;
+    const id = parseInt(idQuery.rows[0].groesste_id,10) + 1;
 
     const result = await pool.query(
       'INSERT INTO authen (username,password,email,id) VALUES ($1, $2, $3, $4) RETURNING *',
@@ -254,12 +254,13 @@ app.post('/vehicles/creatorid', async (req: any, res: any) => {
 app.post('/vehicles/newvehicle', async (req: any, res: any) => {
   try {
     const { brand,model,manufactoringDate,mileage,price,creatorID } = req.body;
-    let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM vehicle');
-    const id = idQuery.rows[0].groesste_id + 1;
+    let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM vehicles');
+    const id = parseInt(idQuery.rows[0].groesste_id,10) + 1;
+    console.log('id: ' + id)
 
-    const result = await pool.query(`INSERT INTO public.vehicles(
-	id, marke, modell, baujahr, kilometerstand, kraftstoff, getriebe, preis, bilder, ersteller_id, erstelllt_am)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [id]);
+    const result = await pool.query(`INSERT INTO vehicles(
+	id, marke, modell, baujahr, kilometerstand, preis, ersteller_id)
+	VALUES ($1, $2, $3, $4, $5, $6, $7)`, [id,brand,model,manufactoringDate,mileage,price,creatorID]);
     return res.status(200).json(result.rows);
   } catch (err) {
     if (err instanceof Error) {

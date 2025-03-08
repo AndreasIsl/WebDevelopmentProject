@@ -29,7 +29,7 @@ export class VehiclesComponent {
 
   setPlaceholderImage() {
     this.vehicles.forEach((vehicle) => {
-      if (vehicle.bilder.length == 0) {
+      if (vehicle.bilder == null || vehicle.bilder.length == 0) {
         vehicle.Image = '../assets/images/car_placeholder_image.png';
       } else {
         vehicle.Image = vehicle.bilder[0];

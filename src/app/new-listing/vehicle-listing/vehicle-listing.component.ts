@@ -39,7 +39,7 @@ export class VehicleListingComponent {
             manufactoringDate: manufactoringDate,
             mileage: mileage,
             price: price,
-            creatorID: this.appComponent.currentUser.getId 
+            creatorID: this.appComponent.currentUser.getId() 
           }),        
         });
     

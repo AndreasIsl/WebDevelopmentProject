@@ -10,50 +10,50 @@
         </div>
 
         <form *ngIf="editing" [formGroup]="profileEditForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="userName">UserName</label>
-            <input type="text" class="form-control" id="userName" formControlName="username">
-            <div >
-                <small *ngIf="profileEditForm.get('userName')?.invalid && (profileEditForm.get('userName')?.dirty || profileEditForm.get('userName')?.touched)" class="formAlert">
-                    Username is required and should contain only letters and numbers.
-                </small>
+            <div class="form-group">
+                <label for="userName">UserName</label>
+                <input type="text" class="form-control" id="userName" formControlName="username">
+                <div >
+                    <small *ngIf="profileEditForm.get('userName')?.invalid && (profileEditForm.get('userName')?.dirty || profileEditForm.get('userName')?.touched)" class="formAlert">
+                        Username is required and should contain only letters and numbers.
+                    </small>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" formControlName="email">
-            <div>
-                <small *ngIf="profileEditForm.get('email')?.invalid && (profileEditForm.get('email')?.dirty || profileEditForm.get('email')?.touched)" class="formAlert">
-                    Valid email is required.
-                </small>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email" >
+                <div>
+                    <small *ngIf="profileEditForm.get('email')?.invalid && (profileEditForm.get('email')?.dirty || profileEditForm.get('email')?.touched)" class="formAlert">
+                        Eine gültige Email wird benötigt.
+                    </small>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" formControlName="password">
-            <div>
-                <small *ngIf="(passwordErrors && passwordErrors['required']) && (profileEditForm.get('password')?.dirty || profileEditForm.get('password')?.touched)" class="formAlert">
-                    Passwort ist erforderlich
-                </small>
-                <small *ngIf="passwordErrors && passwordErrors['minlength']" class="formAlert">
-                    Passwort muss mindestens 8 Zeichen lang sein
-                </small>
-                <small *ngIf="passwordErrors && passwordErrors['passwordStrength']" class="formAlert">
-                    {{ passwordErrors['passwordStrength'] }}
-                </small>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
+                <div>
+                    <small *ngIf="(passwordErrors && passwordErrors['required']) && (profileEditForm.get('password')?.dirty || profileEditForm.get('password')?.touched)" class="formAlert">
+                        Passwort ist erforderlich
+                    </small>
+                    <small *ngIf="passwordErrors && passwordErrors['minlength']" class="formAlert">
+                        Passwort muss mindestens 8 Zeichen lang sein
+                    </small>
+                    <small *ngIf="passwordErrors && passwordErrors['passwordStrength']" class="formAlert">
+                        {{ passwordErrors['passwordStrength'] }}
+                    </small>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
-            <div>
-                <small *ngIf="profileEditForm.errors?.['passwordMismatch'] && profileEditForm.touched" class="formAlert">
-                    {{ profileEditFormErrors?.['passwordMismatch'] }}
-                </small>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
+                <div>
+                    <small *ngIf="profileEditForm.errors?.['passwordMismatch'] && profileEditForm.touched" class="formAlert">
+                        {{ profileEditFormErrors?.['passwordMismatch'] }}
+                    </small>
+                </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-        <button type="button" class="btn btn-primary" (click)="profileEditForm.reset()">Clear</button>
+            <button type="submit" class="btn btn-primary" disabled="{{submitButtonDisabled}}" >Change</button>
+            <button type="button" class="btn btn-primary" (click)="profileEditForm.reset()" >Clear</button>
         </form>
 
         <button *ngIf="!editing" (click)="editProfile()">Edit Profile</button>

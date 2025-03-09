@@ -26,7 +26,7 @@ export class RegisterComponent {
     return this.registerForm.get('password')?.errors || {};
   }
 
-  constructor(private fb: FormBuilder, private router: Router, private appComponent: AppComponent,private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private appComponent: AppComponent, private authService: AuthService) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
       email: ['', [Validators.required, Validators.email]],
@@ -41,17 +41,17 @@ export class RegisterComponent {
 
   async onSubmit() {
     const { username, password, email } = this.registerForm.value;
-      this.authService.register(username, password, email).subscribe(
-        (res: any) => {
-          this.successMessage = 'Register success!';
-          localStorage.setItem('token', res.token); 
-          this.appComponent.setCurrentUser();
-          this.router.navigate(['']);
-        },
-        (err: any) => {
-          this.errorMessage = 'Register failed.';
-        }
-      );  
+    this.authService.register(username, password, email).subscribe(
+      (res: any) => {
+        this.successMessage = 'Register success!';
+        localStorage.setItem('token', res.token);
+        this.appComponent.setCurrentUser();
+        this.router.navigate(['']);
+      },
+      (err: any) => {
+        this.errorMessage = 'Register failed.';
+      }
+    );
   }
 
   closeAlert() {

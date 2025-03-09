@@ -14,10 +14,11 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent {
 profileEditForm: FormGroup;
-
 user: User = new User( '', '',  '', '', 0 );
-  userItems: any = [];
+userItems: any = [];
 editing: any;
+submitButtonDisabled = true;
+
   
   
   constructor(private fb: FormBuilder,private appComponent: AppComponent, private authService: AuthService, private router: Router) {
@@ -78,35 +79,63 @@ editing: any;
     }
   }
   
-  onSubmit() {
-    throw new Error('Method not implemented.');
-  }
-
+  
   deleteItem(id : number) {
     const deleteData = async () => {
       const response = await fetch(`http://localhost:5001/vehicles/${id}`, {
         method: "DELETE",
       });
-  
+      
       if (response.ok) {
         console.log(`Vehicle with id: ${id} deleted`);
-        this.router.navigate(['profil']); // Jetzt funktioniert `this.router`
+        this.router.navigate(['profil']); 
       } else {
         console.error("Error deleting vehicle");
       }
     };
-  
-    deleteData();
     
+    deleteData();
+  }
+
+  onSubmit() {
+    const updateData = async () => {
+      const response = await fetch("http://localhost:5001/auth/update", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: this.profileEditForm.value['username'],
+            email: this.profileEditForm.value['email'],
+            password: this.profileEditForm.value['password'],
+            id: this.user.getId()
+          }),        
+        });
+        
+      this.appComponent.onLogout(); 
+      if (response.ok) {
+        console.log(`User updated`);
+        this.editing = false;
+      } else {
+        console.error("Error deleting vehicle");
+      }
+    };
+    
+    
+    updateData();
   }
   
   editProfile() {
-  throw new Error('Method not implemented.');
+    this.profileEditForm.patchValue({ username: this.user.getName() });
+    this.profileEditForm.patchValue({ password: this.user.getPassword() });
+    this.profileEditForm.patchValue({ email: this.user.getEmail() });
+
+    this.editing = true;
   }
 
   setPlaceholderImage() {
     this.userItems.forEach((item : any) => {
-      if (item.bilder.length == 0) {
+      if (item.bilder == null || item.bilder.length == 0) {
         item.Image = '../assets/images/car_placeholder_image.png';
       } else {
         item.Image = item.bilder[0];
@@ -134,7 +163,7 @@ export function passwordValidator(control: AbstractControl): ValidationErrors | 
   const value = control.value;
 
   if (!value) {
-    return null; // Kein Fehler, wenn das Feld leer ist (für Required separat prüfen)
+    return null; 
   }
 
   // Bedingungen prüfen

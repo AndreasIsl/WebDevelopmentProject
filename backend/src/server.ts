@@ -203,6 +203,27 @@ function verifyToken(req : any, res : any, next: any) {
   });
 }
 
+// update User
+app.put('/auth/update', async (req, res) => {
+  const { username, password, email, id } = req.body;
+  console.log('username:', username);
+  console.log('password:', password);
+  console.log('email:', email);
+  console.log('id:', id);
+  try{
+    const updateUserQuery = await pool.query(
+      'UPDATE authen SET email = $1, username = $2, password = $3 WHERE id = $4',
+      [email, username, password, id]
+    );
+  
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (err : any) {
+    res.status(500).send('Server Error :' + err.message);
+  }
+});
+
+
+
 
 //-------------------->Vehicles	
 app.get('/vehicles', async (req, res) => {
@@ -223,6 +244,7 @@ app.post('/vehicle', async (req: any, res: any) => {
   try {
     const { id } = req.body;
     const result = await pool.query('SELECT * FROM vehicles WHERE id = $1', [id]);
+    console.log(result.rows);
     return res.status(200).json(result.rows);
   } catch (err) {
     if (err instanceof Error) {
@@ -288,6 +310,23 @@ app.delete('/vehicles/:id', async (req: any, res: any) => {
     return res.status(500).send('Server Error');
   }
 });
+
+
+//update vehicle
+app.put('/vehicle/update', async (req, res) => {
+  const { price, mileage, manufacturingdate,description, id } = req.body;
+  try{
+    const updateUserQuery = await pool.query(
+      'UPDATE vehicles SET preis = $1, kilometerstand = $2, baujahr = $3, beschreibung = $4 WHERE id = $5',
+      [ price, mileage, manufacturingdate,description, id]
+    );
+  
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (err : any) {
+    res.status(500).send('Server Error :' + err.message);
+  }
+});
+
 
 
 //-------------------->Generell logic

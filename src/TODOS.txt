@@ -1,0 +1,4 @@
+TODOS
+1:  Profile und register form validations funktionieren nicht
+3:  Messages
+4:  Prepared Statements  

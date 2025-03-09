@@ -2,15 +2,40 @@
     <div class="vehicle_detail_container">
         <div id="image_container">
             <img src="{{vehicle.Image}}" alt="Vehicle Image" width="100" height="100">
-            <h2>{{vehicle.marke}} {{vehicle.modell}}</h2>
         </div>
-        <p>Price: {{vehicle.preis}} €</p>
-        <p>Mileage: {{vehicle.kilometerstand}} km</p>
-        <p>Manufactoring date:{{vehicle.baujahr}}</p>
-        <p>Description:<br>
-            {{vehicle.beschreibung}}
-        </p>
-        <p>Inserted on: {{vehicle.erstelllt_am}}</p>
-        <button>Contact</button>
+        <h2 >{{vehicle.marke}} {{vehicle.modell}}</h2>
+        <div *ngIf="!onEditVal">
+            <p>Price: {{vehicle.preis}} €</p>
+            <p>Mileage: {{vehicle.kilometerstand}} km</p>
+            <p>Manufactoring date:{{vehicle.baujahr}}</p>
+            <p>Description:<br>
+                {{vehicle.beschreibung}}
+            </p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" *ngIf="isOwner() && onEditVal" [formGroup]="vehicleEditForm">
+            <div>
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" formControlName="price" > €
+            </div>
+            <div>
+                <label for="mileage">Mileage:</label>
+                <input type="number" id="mileage" name="mileage" formControlName="mileage"> km
+            </div>
+            <div>
+                <label for="manufacturingdate">Manufacturing date:</label>
+                <input type="text" id="manufacturingdate" name="manufacturingdate" formControlName="manufacturingdate">
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" formControlName="description" rows="8" cols="100"></textarea>
+            </div>
+            <button type="submit">Save</button>
+            <button type="button" (click)="vehicleEditForm.reset()">Clear</button>
+        </form>
+        <div>
+            <button (click)="onEdit()" *ngIf="!isOwner()">Contact</button>
+            <button (click)="onEdit()" *ngIf="isOwner() && !onEditVal">Edit</button>
+        </div>
     </div>
 </div>

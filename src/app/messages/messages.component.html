@@ -1,0 +1,21 @@
+<div id="messages_container">
+    <h2>Messages</h2>
+    <div id="messages_content">  
+        <div id="chat_container">
+            <h3>Chats</h3>
+            <ul id="chat_list">
+                <li *ngFor="let chat of chatNames"><button class="chatButton" (click)="chatOnSelected(chat.id)">{{ chat.username }}</button></li>
+            </ul>
+        </div>
+        <div id="messages_container">
+            <h3>Messages with</h3>
+            <ul id="messages_list">
+                <li *ngFor="let message of selectedMessages" class="{{message.class}}"><span class="{{message.class}}_span">{{ message.text }}</span></li>
+            </ul>
+            <form id="message_form" (submit)="sendMessage()" [formGroup]="messageSendForm" > 
+                <input type="text"  name="messageText" placeholder="Type your message here" formControlName="messageInput">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</div>

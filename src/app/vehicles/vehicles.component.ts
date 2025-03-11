@@ -84,6 +84,7 @@ export class VehiclesComponent {
   searchVehicle() {
     throw new Error('Method not implemented.');
   }
+  
   toggleFilters() {
     this.isVisible = !this.isVisible;
   }

@@ -34,7 +34,7 @@
             <button type="button" (click)="vehicleEditForm.reset()">Clear</button>
         </form>
         <div>
-            <button (click)="onEdit()" *ngIf="!isOwner()">Contact</button>
+            <button (click)="onContact()" *ngIf="!isOwner()">Contact</button>
             <button (click)="onEdit()" *ngIf="isOwner() && !onEditVal">Edit</button>
         </div>
     </div>

@@ -17,8 +17,15 @@ export class AppComponent {
   isLoggedIn = false;
   
   constructor(private authService: AuthService, private router: Router) {
+  
+  }
+
+  ngOnInit() {
     if (this.authService.isAuthenticated()) {
       this.setCurrentUser();
+    } else {
+      this.router.navigate(['']);
+      this.onLogout();
     }
   }
 
@@ -50,6 +57,7 @@ export class AppComponent {
     this.currentUser = this.emptyUser;
     this.router.navigate(['']);
   }
+
 }
 
 export class User {

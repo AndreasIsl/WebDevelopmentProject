@@ -3,7 +3,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AppComponent, User } from '../app.component';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { waitForAsync } from '@angular/core/testing';
 import { Console } from 'console';
 
@@ -22,15 +22,18 @@ export class MessagesComponent {
   selectedMessages: any = [];
   chatNames: any = [];
   messageSendForm: FormGroup<any>;
+  contactid: number | null = null;
+  displayName: string = "";
 
 
-  constructor(private fb: FormBuilder, private appComponent: AppComponent, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private appComponent: AppComponent, private authService: AuthService, private router: Router,private route: ActivatedRoute) {
       this.messageSendForm = this.fb.group({
         messageInput: ['']
       });
   }
 
   ngOnInit() {
+    this.contactid = Number(this.route.snapshot.paramMap.get('contactid'));
     this.getMessages();
   }
 
@@ -46,14 +49,26 @@ export class MessagesComponent {
             : []
         )
       )
-    ).filter((chat) => chat !== id);
+    )
+    
+    console.log("Chats:", this.chats);
+    if (this.contactid != null) {
+      console.log("Contactid: " + this.contactid);	
+      this.chats.push(this.contactid);
+    }
+    
+    this.chats.filter((chat: any) => chat !== id);
 
     // Chat-Namen abrufen mit Promise.all
     this.chatNames = await Promise.all(
       this.chats.map(async (chat: any) => await this.getChatName(chat))
     );
-
     console.log("Chat names:", this.chatNames);
+
+    if (this.contactid != null) {
+      this.chatOnSelected(this.contactid);
+      this.contactid = null;
+    }
   }
 
 
@@ -124,6 +139,12 @@ export class MessagesComponent {
 
   chatOnSelected(chatId: number) {
     this.selectedChatId = chatId;
+    this.chatNames.forEach((chat: any) => {
+      if (chat.id == chatId) {
+        this.displayName = chat.username;
+      }
+    });
+
     this.selectedMessages = this.messages.filter(
       (message: any) =>
         message.senderid == chatId || message.recieverid == chatId

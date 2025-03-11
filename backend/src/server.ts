@@ -160,13 +160,13 @@ app.post('/auth/register', async (req: any, res: any) => {
 // login user
 app.get('/auth/login', async (req : any, res: any) => {
   try {
-    const { username, password } = req.query; // Get query parameters
+    const { username, password } = req.query;
     const userExistsQuery = await pool.query(
       'SELECT * FROM authen WHERE username = $1',
       [username]
     );
     if (userExistsQuery.rows.length > 0 && userExistsQuery.rows[0].password === password) {
-      console.log(userExistsQuery.rows);
+      console.log("Auth Login :" + userExistsQuery.rows);
       const email = userExistsQuery.rows[0].email;
       const image = userExistsQuery.rows[0].image;
       const id = userExistsQuery.rows[0].id;
@@ -175,6 +175,25 @@ app.get('/auth/login', async (req : any, res: any) => {
       return res.status(200).json({ token, id });
     } else {
       return res.status(400).json({ message: 'Login data is incorrect' });
+    }
+  } catch (err) {
+    return res.status(500).send('Server Error');
+  }
+});
+
+app.get('/auth/user/:id', async (req : any, res: any) => {
+  try {
+    const  id  = req.params.id;
+    const query = await pool.query(
+      'SELECT username FROM authen WHERE id = $1',
+      [id]
+    );
+
+    console.log(query.rows);
+    if (query.rows.length > 0) {
+      return res.status(200).json( query.rows[0] );
+    } else {
+      return res.status(400).json({ message: '/auth/:id : get auth per id user not found' });
     }
   } catch (err) {
     return res.status(500).send('Server Error');
@@ -329,8 +348,47 @@ app.put('/vehicle/update', async (req, res) => {
 
 
 
-//-------------------->Generell logic
+//-------------------->Messages
+//get messages by id 
+app.get('/messages/:id', async (req: any, res: any) => {
+  try {
+    const id = req.params.id;
+    const sended = await pool.query('SELECT * FROM messages WHERE senderid = $1', [id]);
+    const recieved = await pool.query('SELECT * FROM messages WHERE recieverid = $1', [id]);
 
+    let result = sended.rows.concat(recieved.rows);
+    return res.status(200).json(result);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return res.status(500).send('Server Error');
+  }
+});
+
+//add message
+app.post('/messages', async (req: any, res: any) => {
+  try {
+    const { senderid,recieverid,message} = req.body;
+    let idQuery = await pool.query( 'SELECT MAX(messageid) AS groesste_id FROM messages');
+    const id = parseInt(idQuery.rows[0].groesste_id,10) + 1;
+
+    const result = await pool.query(`INSERT INTO messages (messageid, senderid, recieverid, text) VALUES ($1, $2, $3, $4)`,
+       [id,senderid,recieverid,message]);
+    return res.status(200).json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("Database error:", err);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return res.status(500).send('Server Error');
+  }
+});
+
+//-------------------->Generell logic
 //server start msg
 app.listen(port, () => console.log(`Server started on port ${port}`));	
 

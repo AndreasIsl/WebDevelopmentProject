@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="registerForm">
         <legend>Register</legend>
         <div class="form-group">
             <label for="userName">UserName</label>
@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" formControlName="password">
+            <input type="password" class="form-control" id="password" formControlName="password" >
             <div>
                 <small *ngIf="(passwordErrors && passwordErrors['required']) && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="formAlert">
                     Passwort ist erforderlich
@@ -43,7 +43,7 @@
                 </small>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmittable()" >Register</button>
         <button type="button" class="btn btn-primary" (click)="registerForm.reset()">Clear</button>
         <p>Already have an account? <a routerLink="/login">Login</a></p>
         <p  #notUniqueUserAlert id='notUniqueUserAlert' class="formAlert">Error: User already exists</p>

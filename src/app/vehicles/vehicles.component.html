@@ -1,10 +1,22 @@
 <div id="vehicle_container">
     <div id="vehicle_search">
-        <input type="text" placeholder="Audi A4....." id="search-box">
-        <button id="vehicle_search_button" (click)="searchVehicle()">
-            <span>Search</span>
-            <img src="..\assets\images\magnifying-glass-solid.svg" alt="Icon" width="15" height="15">
-        </button>
+        <form [formGroup]="categoryForm">
+            <div>
+                <label for="category_car">Cars</label>
+                <input type="checkbox" id="category_car" formControlName="category_car" (change)="updateCategory()">
+            </div>
+            <div>
+                <label for="category_motorcycle">Motorcyles</label>
+                <input type="checkbox" id="category_motorcycle" formControlName="category_motorcycle" (change)="updateCategory()">
+            </div>
+            <div id="search_container">
+                <input type="text" placeholder="Audi A4....." id="search-box" formControlName="search">
+                <button id="vehicle_search_button" (click)="searchVehicle()">
+                    <span>Search</span>
+                    <img src="..\assets\images\magnifying-glass-solid.svg" alt="Icon" width="15" height="15">
+                </button>
+            </div>
+        </form>
     </div>
     <div id="vehicle_filters">
         <div id="vehicle_filters_achordeon" *ngIf="isVisible" ngClass="{'show': isVisible}">
@@ -15,31 +27,32 @@
                         <ul class="filter_list">
                             <li *ngFor="let brand of brands; let i = index">
                                 <label for="{{brand}}">{{brand}}</label>
-                                <input type="checkbox" id="{{brand}}" formControlName="{{i}}">
+                                <input type="checkbox" id="{{brand}}" formControlName="{{brand}}">
                             </li>
                         </ul>
                     </fieldset>
                     <fieldset class="manu_fieldset">
                         <legend>Manufactoring dates till</legend>
-                        <span>{{manufactoringDates[0]}}</span>
+                        <span>Min: {{manufactoringDates[0]}}</span>
                         <div id="range_container">
                             <input type="range" name="date" [min]="manufactoringDates[0]"
                                 [max]="manufactoringDates[manufactoringDates.length - 1]"
-                                formControlName="manufactoringDate" #rangeInput (input)="0" />
+                                formControlName="manufactoringDate" #rangeInput (input)="0" 
+                                [defaultValue]="manufactoringDates[0]"/>
                             <span>{{ rangeInput.value }}</span>
                         </div>
-                        <span>{{manufactoringDates[manufactoringDates.length - 1]}}</span>
+                        <span>Max: {{manufactoringDates[manufactoringDates.length - 1]}}</span>
                     </fieldset>
                     <fieldset>
                         <legend>Ids</legend>
-                        <input type="text" list="ids" formControlName="id" id="id" />
-                        <datalist id="ids">
-                            <option *ngFor="let id of ids" value="{{id}}"></option>
-                        </datalist>
+                
+                        <select id="id" name="id" formControlName="id">
+                            <option *ngFor="let id of ids" value="{{id}}">{{id}}</option>
+                        </select>
                     </fieldset>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary" (click)="filterForm.reset()">Clear</button>
+                    <button type="button" class="btn btn-primary" (click)="filterForm.reset(); reset()">Clear</button>
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </form>
@@ -49,11 +62,11 @@
             <img src="../assets/images/chevron-down-solid.svg" alt="Icon" width="20" height="20">
         </button>
     </div>
-    <div id="vehicle_content">
-        <ul>
-            <li *ngFor="let vehicle of vehicles">
+    <div id="vehicle_content" >
+        <ul >
+            <li *ngFor="let vehicle of filteredVehicles" >
                 <div id="vehicle_item_container">
-                    <img src="{{vehicle.Image}}" alt="Vehicle Image" width="100" height="100">
+                    <img src="{{vehicle.Image}}" alt="vehicle Image" width="100" height="100">
                     <div id="vehicle_info">
                         <p>{{vehicle.marke}} {{vehicle.modell}}</p>
                         <p>{{vehicle.preis}} €</p>

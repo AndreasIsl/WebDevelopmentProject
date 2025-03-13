@@ -5,6 +5,7 @@
         </div>
         <h2 >{{vehicle.marke}} {{vehicle.modell}}</h2>
         <div *ngIf="!onEditVal">
+            <p *ngIf="isOwner()">Status: {{vehicle.status}}</p>
             <p>Price: {{vehicle.preis}} €</p>
             <p>Mileage: {{vehicle.kilometerstand}} km</p>
             <p>Manufactoring date:{{vehicle.baujahr}}</p>
@@ -14,6 +15,13 @@
         </div>
 
         <form (ngSubmit)="onSubmit()" *ngIf="isOwner() && onEditVal" [formGroup]="vehicleEditForm">
+            <div>
+                <label for="selstatus">Status:</label>
+                <select id="selstatus" name="selstatus" formControlName="selstatus">
+                    <option value="sold" >Sold</option>
+                    <option value="aktiv">Aktiv</option>
+                </select>
+            </div>
             <div>
                 <label for="price">Price:</label>
                 <input type="number" id="price" name="price" formControlName="price" > €

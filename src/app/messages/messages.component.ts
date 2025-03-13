@@ -52,7 +52,7 @@ export class MessagesComponent {
     )
     
     console.log("Chats:", this.chats);
-    if (this.contactid != null) {
+    if (!Number.isNaN(this.contactid)  && !this.chats.includes(this.contactid)) {
       console.log("Contactid: " + this.contactid);	
       this.chats.push(this.contactid);
     }

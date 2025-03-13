@@ -19,13 +19,12 @@ export class RegisterComponent {
   @ViewChild('notUniqueUserAlert') notUniqueUserAlert!: ElementRef<HTMLParagraphElement>;
   errorMessage!: string;
   successMessage: string = '';
-
-
-
+  
+  
   get passwordErrors(): { [key: string]: any } {
     return this.registerForm.get('password')?.errors || {};
   }
-
+  
   constructor(private fb: FormBuilder, private router: Router, private appComponent: AppComponent, private authService: AuthService) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
@@ -34,11 +33,11 @@ export class RegisterComponent {
       confirmPassword: ['', Validators.required]
     }, { validators: confirmPasswordValidator });
   }
-
+  
   get registerFormErrors() {
     return this.registerForm.errors;
   }
-
+  
   async onSubmit() {
     const { username, password, email } = this.registerForm.value;
     this.authService.register(username, password, email).subscribe(
@@ -53,12 +52,19 @@ export class RegisterComponent {
       }
     );
   }
-
+  
   closeAlert() {
     if (this.notUniqueUserAlert) {
       this.notUniqueUserAlert.nativeElement.style.display = 'none';
     } else {
       console.error('Element not found: notUniqueUserAlert');
+    }
+  }
+  
+  onSubmittable() {
+    console.log(this.registerForm.valid);
+    if (this.registerForm.valid) {
+      this.onSubmit();
     }
   }
 }
@@ -74,16 +80,16 @@ export function confirmPasswordValidator(group: AbstractControl): ValidationErro
 
 export function passwordValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
-
+  
   if (!value) {
     return null; // Kein Fehler, wenn das Feld leer ist (für Required separat prüfen)
   }
-
+  
   // Bedingungen prüfen
   const hasUpperCase = /[A-Z]/.test(value);
   const hasNumber = /[0-9]/.test(value);
-
+  
   const passwordValid = hasUpperCase && hasNumber;
-
+  
   return !passwordValid ? { passwordStrength: 'Das Passwort muss mindestens einen Großbuchstaben und eine Zahl enthalten' } : null;
 }

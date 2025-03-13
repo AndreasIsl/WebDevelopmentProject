@@ -20,14 +20,15 @@ export class VehicleListingComponent {
       model: ['', [Validators.required]],
       manufactoringDate: ['', [Validators.required]],
       mileage: ['', Validators.required],
-      price: ['', Validators.required]
+      price: ['', Validators.required],
+      category: ['', Validators.required]
     }, { validators: confirmPasswordValidator });
   }
   
   onSubmit() {
     const insertVehicle = async ()=>{
       try {
-        const { brand,model,manufactoringDate,mileage,price } = this.vehicleListingForm.value;
+        const { brand,model,manufactoringDate,mileage,price ,category} = this.vehicleListingForm.value;
         const response = await fetch("http://localhost:5001/vehicles/newvehicle", {
           method: "POST",
           headers: {
@@ -39,7 +40,8 @@ export class VehicleListingComponent {
             manufactoringDate: manufactoringDate,
             mileage: mileage,
             price: price,
-            creatorID: this.appComponent.currentUser.getId() 
+            creatorID: this.appComponent.currentUser.getId(),
+            category: category
           }),        
         });
     

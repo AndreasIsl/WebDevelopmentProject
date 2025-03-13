@@ -38,11 +38,24 @@
 }
 #vehicle_search{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--primary-color);
     padding: 10px;
+    gap: 10px;
+}
+
+#vehicle_search form{
+    color: #fff;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#vehicle_search form{
+    color: #fff;
 }
 
 #vehicle_search button {
@@ -110,10 +123,17 @@
 
 
 #range_container {
-  
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 10px;
+}
+
+#search_container{
+    align-items: center;
+    justify-content: center;
+    display : flex;
+    flex-direction: row;
+    width: 60%;
 }

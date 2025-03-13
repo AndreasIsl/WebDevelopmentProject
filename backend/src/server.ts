@@ -247,6 +247,20 @@ app.put('/auth/update', async (req, res) => {
 //-------------------->Vehicles	
 app.get('/vehicles', async (req, res) => {
   try {
+    const result = await pool.query('SELECT * FROM vehicles WHERE status = $1', ['aktiv']);
+    res.json(result.rows);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Unknown error:', err);
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+app.get('/vehicles/all', async (req, res) => {
+  try {
     const result = await pool.query('SELECT * FROM vehicles');
     res.json(result.rows);
   } catch (err) {
@@ -294,14 +308,14 @@ app.post('/vehicles/creatorid', async (req: any, res: any) => {
 //addvehicle
 app.post('/vehicles/newvehicle', async (req: any, res: any) => {
   try {
-    const { brand,model,manufactoringDate,mileage,price,creatorID } = req.body;
+    const { brand,model,manufactoringDate,mileage,price,creatorID,category } = req.body;
     let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM vehicles');
     const id = parseInt(idQuery.rows[0].groesste_id,10) + 1;
     console.log('id: ' + id)
 
     const result = await pool.query(`INSERT INTO vehicles(
-	id, marke, modell, baujahr, kilometerstand, preis, ersteller_id)
-	VALUES ($1, $2, $3, $4, $5, $6, $7)`, [id,brand,model,manufactoringDate,mileage,price,creatorID]);
+	id, marke, modell, baujahr, kilometerstand, preis, ersteller_id,status,category)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8 , $9)`, [id,brand,model,manufactoringDate,mileage,price,creatorID,'aktiv',category]);
     return res.status(200).json(result.rows);
   } catch (err) {
     if (err instanceof Error) {
@@ -333,11 +347,11 @@ app.delete('/vehicles/:id', async (req: any, res: any) => {
 
 //update vehicle
 app.put('/vehicle/update', async (req, res) => {
-  const { price, mileage, manufacturingdate,description, id } = req.body;
+  const { price, mileage, manufacturingdate,description, id ,status} = req.body;
   try{
     const updateUserQuery = await pool.query(
-      'UPDATE vehicles SET preis = $1, kilometerstand = $2, baujahr = $3, beschreibung = $4 WHERE id = $5',
-      [ price, mileage, manufacturingdate,description, id]
+      'UPDATE vehicles SET preis = $1, kilometerstand = $2, baujahr = $3, beschreibung = $4 ,status = $5 WHERE id = $6',
+      [ price, mileage, manufacturingdate,description,status, id]
     );
   
     res.status(200).json({ message: 'User updated successfully' });

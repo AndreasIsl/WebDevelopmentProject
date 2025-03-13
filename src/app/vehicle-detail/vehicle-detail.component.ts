@@ -3,6 +3,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { stat } from 'fs';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -23,7 +24,8 @@ export class VehicleDetailComponent implements OnInit {
       manufacturingdate: [''],
       mileage: [''],
       price: [''],
-      description: ['']
+      description: [''],
+      selstatus: ['']
     });
   }
 
@@ -70,6 +72,8 @@ export class VehicleDetailComponent implements OnInit {
     this.vehicleEditForm.patchValue({ mileage: this.vehicle.kilometerstand });
     this.vehicleEditForm.patchValue({ manufacturingdate: this.vehicle.baujahr });
     this.vehicleEditForm.patchValue({ description: this.vehicle.beschreibung });
+    this.vehicleEditForm.patchValue({ selstatus: this.vehicle.status });
+    
 
     this.onEditVal = true;
   }
@@ -86,7 +90,8 @@ export class VehicleDetailComponent implements OnInit {
           mileage: this.vehicleEditForm.value['mileage'],
           manufacturingdate: this.vehicleEditForm.value['manufacturingdate'],
           description: this.vehicleEditForm.value['description'],
-          id: this.vehicle.id
+          id: this.vehicle.id,
+          status: this.vehicleEditForm.value['selstatus']
         }),
       });
 
@@ -110,4 +115,6 @@ export class VehicleDetailComponent implements OnInit {
   onContact() {
     this.router.navigate(['messages', this.vehicle.ersteller_id])
   }
+
+
 }

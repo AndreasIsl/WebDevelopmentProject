@@ -5,6 +5,8 @@ import { createTables } from './config/init.db';
 import { Pool } from 'pg';
 import pool from './config/db.config';
 import { Console } from 'console';
+import bcrypt from 'bcrypt';
+
 
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -136,14 +138,16 @@ app.post('/auth/register', async (req: any, res: any) => {
 
     let idQuery = await pool.query( 'SELECT MAX(id) AS groesste_id FROM authen');
     const id = parseInt(idQuery.rows[0].groesste_id,10) + 1;
+    	
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     const result = await pool.query(
       'INSERT INTO authen (username,password,email,id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [username, password, email, id]
+      [username, hashedPassword, email, id]
     );
     console.log('User registered');
 
-    const token = jwt.sign({ username: username, password: password, email: email ,id: id }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ username: username, password: hashedPassword, email: email ,id: id }, SECRET_KEY, { expiresIn: '1h' });
     return res.status(200).json({ token, id });
   } catch (err) {
     if (err instanceof Error) {
@@ -165,13 +169,14 @@ app.get('/auth/login', async (req : any, res: any) => {
       'SELECT * FROM authen WHERE username = $1',
       [username]
     );
-    if (userExistsQuery.rows.length > 0 && userExistsQuery.rows[0].password === password) {
+    const match = bcrypt.compareSync(password, userExistsQuery.rows[0].password)
+    if (userExistsQuery.rows.length > 0 &&  match ) {
       console.log("Auth Login :" + userExistsQuery.rows);
       const email = userExistsQuery.rows[0].email;
       const image = userExistsQuery.rows[0].image;
       const id = userExistsQuery.rows[0].id;
 
-      const token = jwt.sign({ username: username, password: password, email: email, image: image, id: id }, SECRET_KEY, { expiresIn: '1h' });
+      const token = jwt.sign({ username: username, password: userExistsQuery.rows[0].password , email: email, image: image, id: id }, SECRET_KEY, { expiresIn: '1h' });
       return res.status(200).json({ token, id });
     } else {
       return res.status(400).json({ message: 'Login data is incorrect' });
@@ -229,12 +234,14 @@ app.put('/auth/update', async (req, res) => {
   console.log('password:', password);
   console.log('email:', email);
   console.log('id:', id);
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
   try{
     const updateUserQuery = await pool.query(
       'UPDATE authen SET email = $1, username = $2, password = $3 WHERE id = $4',
-      [email, username, password, id]
+      [email, username, hashedPassword, id]
     );
-  
+    
     res.status(200).json({ message: 'User updated successfully' });
   } catch (err : any) {
     res.status(500).send('Server Error :' + err.message);

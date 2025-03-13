@@ -22,6 +22,7 @@
     "typescript": "^5.7.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "dotenv": "^16.4.7",
     "dotenv-webpack": "^8.1.0",
